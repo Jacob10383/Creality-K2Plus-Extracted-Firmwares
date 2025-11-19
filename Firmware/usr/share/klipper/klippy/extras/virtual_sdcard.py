@@ -754,9 +754,9 @@ class VirtualSD:
                 if len(value_G)<=1:
                     continue
                 value_T = re.findall(pattern_T, header_data)
-                if len(value_T) == 1:
+                if len(value_T) == 1 and result == 0:
                     result = 1
-                elif len(value_T) > 1:
+                elif len(value_T) > 1 and result >= 0:
                     result = 2
                 break
         return result
@@ -800,10 +800,7 @@ class VirtualSD:
                     if result["X"] and result["Y"] and result["Z"] and result["E"]:
                         break
                     self.reactor.pause(self.reactor.monotonic() + .001)
-            if Tn == 1:
-                result["T"] = "T0"
-                logging.info("power_loss get XYZET T:%s" % str(result))
-            elif Tn == 2:
+            if Tn >= 1:
                 # 获取file_postion的位置的上一个Tn值
                 READ_SIZE = 512*1024
                 pattern = r"(?m)^\s*T(\d+)\s*$"
@@ -823,7 +820,10 @@ class VirtualSD:
                             logging.info("read the file without finding a match")
                             break
                         self.reactor.pause(self.reactor.monotonic() + .001)
-            logging.info("power_loss get XYZET:%s" % str(result))
+            else:
+                result["T"] = "T0"
+                logging.info("power_loss get XYZET T:%s" % str(result))
+            logging.info("power_loss get Tn: %s, get XYZET:%s" % (Tn, str(result)))
         except UnicodeDecodeError as err:
             logging.exception(err)
             # UnicodeDecodeError 'utf-8' codec can't decode byte 0xff in postion 5278: invalid start byte

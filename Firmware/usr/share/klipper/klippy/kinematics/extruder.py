@@ -14,6 +14,8 @@ class ExtruderStepper:
         self.config_pa = config.getfloat('pressure_advance', 0., minval=0.)
         self.config_smooth_time = config.getfloat(
                 'pressure_advance_smooth_time', 0.040, above=0., maxval=.200)
+        self.pressure_advance_enabled = config.getboolean(
+            'pressure_advance_enabled', True)
         # Setup stepper
         self.stepper = stepper.PrinterStepper(config)
         ffi_main, ffi_lib = chelper.get_ffi()
@@ -31,6 +33,9 @@ class ExtruderStepper:
         gcode.register_mux_command("SET_PRESSURE_ADVANCE", "EXTRUDER",
                                    self.name, self.cmd_SET_PRESSURE_ADVANCE,
                                    desc=self.cmd_SET_PRESSURE_ADVANCE_help)
+        gcode.register_mux_command("ENABLE_PRESSURE_ADVANCE", "EXTRUDER",
+                                   None, self.cmd_ENABLE_PRESSURE_ADVANCE,
+                                   desc=self.cmd_ENABLE_PRESSURE_ADVANCE_help)
         gcode.register_mux_command("SET_EXTRUDER_ROTATION_DISTANCE", "EXTRUDER",
                                    self.name, self.cmd_SET_E_ROTATION_DISTANCE,
                                    desc=self.cmd_SET_E_ROTATION_DISTANCE_help)
@@ -90,6 +95,14 @@ class ExtruderStepper:
             raise gcmd.error("Unable to infer active extruder stepper")
         extruder.extruder_stepper.cmd_SET_PRESSURE_ADVANCE(gcmd)
     def cmd_SET_PRESSURE_ADVANCE(self, gcmd):
+        if not self.pressure_advance_enabled:
+            msg = "SET_PRESSURE_ADVANCE is disabled. Use 'ENABLE_PRESSURE_ADVANCE VALUE=1' to enable"
+            gcmd.respond_info(msg)
+            return
+        else:
+            msg = "SET_PRESSURE_ADVANCE is enabled"
+            gcmd.respond_info(msg)
+
         pressure_advance = gcmd.get_float('ADVANCE', self.pressure_advance,
                                           minval=0.)
         smooth_time = gcmd.get_float('SMOOTH_TIME',
@@ -108,6 +121,18 @@ class ExtruderStepper:
                 gcode_move.recordPrintFileName(v_sd.print_file_name_path, v_sd.current_file.name, pressure_advance="SET_PRESSURE_ADVANCE ADVANCE=%s SMOOTH_TIME=%s" % (pressure_advance, smooth_time))
         except Exception as err:
             logging.error(err)
+    
+    cmd_ENABLE_PRESSURE_ADVANCE_help = "Enable or disable cmd_SET_PRESSURE_ADVANCE (VALUE=1 to enable, VALUE=0 to disable)"
+    def cmd_ENABLE_PRESSURE_ADVANCE(self, gcmd):
+        enable = gcmd.get_int('VALUE', minval=0, maxval=1)
+        self.pressure_advance_enabled = enable
+        if enable:
+            msg = "Pressure advance enabled"
+        else:
+            msg = "Pressure advance disabled"
+        
+        gcmd.respond_info(msg)
+
     cmd_SET_E_ROTATION_DISTANCE_help = "Set extruder rotation distance"
     def cmd_SET_E_ROTATION_DISTANCE(self, gcmd):
         rotation_dist = gcmd.get_float('DISTANCE', None)
