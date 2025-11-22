@@ -19,7 +19,7 @@
     "PrintFilePathNew" : "/creality/gui/config/print_list*.json",
     "HOSTNAME":"api.crealitycloud.com",
     "SERVERURL":"https://c-smart.cxswyjy.com",    
-    "VERSION":"V2.0.11.20250811",
+    "VERSION":"V2.0.11.20250910",
     "is_x2600":"0",
     "dev_server_url":"http://172.23.88.185:8080/api/v1/",
     "IDC_SERVER_URL":"https://devdata.cxswyjy.com/api/v1/",
