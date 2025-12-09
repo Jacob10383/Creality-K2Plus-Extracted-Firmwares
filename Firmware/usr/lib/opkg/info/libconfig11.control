@@ -2,7 +2,7 @@ Package: libconfig11
 Version: 1.7.2-3
 Depends: libc, librt, libpthread
 Provides: libconfig
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/libs/libconfig
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/libs/libconfig
 SourceName: libconfig
 License: LGPL-2.1-or-later
 LicenseFiles: COPYING.LIB

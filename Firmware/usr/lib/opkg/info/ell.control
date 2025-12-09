@@ -1,7 +1,7 @@
 Package: ell
 Version: 0.16-1
 Depends: libc, librt, libpthread
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/libs/ell
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/libs/ell
 SourceName: ell
 License: GPLv2
 LicenseFiles: COPYING

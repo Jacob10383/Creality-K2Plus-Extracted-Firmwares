@@ -1,7 +1,7 @@
 Package: ffmpeg
 Version: 4.3.6-1
 Depends: libc, librt, libpthread, libpthread, libffmpeg-full
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/ffmpeg
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/creality/ffmpeg
 SourceName: ffmpeg
 License: LGPL-2.1-or-later GPL-2.0-or-later LGPL-3.0-or-later
 LicenseFiles: COPYING.GPLv2 COPYING.GPLv3 COPYING.LGPLv2.1 COPYING.LGPLv3

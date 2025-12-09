@@ -120,45 +120,34 @@ copy_config()
 
             gcode_dir=F008
             ;;
-
-        "GS-03")
-            if [ "$board" = "CR0CN240319C13" -o "$board" = "CR0CN240319C14" ]; then
-                config_dir=GS_03_CR0CN240319C13
-            else
-                config_dir=
-            fi
-
-            gcode_dir=GS_03
-            ;;
-
-        "F028")
-            if [ "$board" = "CR0CN240319C13" -o "$board" = "CR0CN240319C14" ]; then
-                config_dir=F008_CR0CN240319C13
-            else
-                config_dir=
-            fi
-
-            gcode_dir=F008
-            ;;
-
-        "F012")
-            if [ "$board" = "CR0CN240319C13" ]; then
-                config_dir=F012_CR0CN240319C13
-            else
+	    
+	"F012")
+            if [ "$board" = "CR0CN200400C10" ]; then
+                config_dir=F012_CR0CN200400C10
+	        else		
                 config_dir=
             fi
 
             gcode_dir=F012
             ;;
-
-        "F021")
-            if [ "$board" = "CR0CN240319C13" ]; then
-                config_dir=F021_CR0CN240319C13
-            else
-                config_dir=
+	    
+	"F021")
+            if [ "$board" = "CR0CN200400C10" ]; then
+                config_dir=F021_CR0CN200400C10
+	        else		
+                config_dir=F021
             fi
 
             gcode_dir=F021
+            ;;
+	"F025")
+            if [ "$board" = "CR0CN200400C10" ]; then
+                config_dir=F025_CR0CN200400C10
+	        else		
+                config_dir=F025
+            fi
+
+            gcode_dir=F025
             ;;
 
         *)
@@ -227,14 +216,6 @@ copy_config()
         echo "gcode_dir is not exist!"
         exit 0
     }
-
-    # delete old gcodes
-    if [ "x$model" = "xF008" ]; then
-        rm -f ${GCODE_FILES_DIR}/3DBench_PLA_25m.gcode
-        rm -f ${GCODE_FILES_DIR}/3DBench_PLA_14m.gcode
-        rm -f ${GCODE_FILES_DIR}/3DBenchy_PLA_34m9s.gcode
-        rm -f ${GCODE_FILES_DIR}/Crealitylogo_PLA_35m.gcode
-    fi
 
     rsync -a $GCODE_PATH/* ${GCODE_FILES_DIR}/
     sync

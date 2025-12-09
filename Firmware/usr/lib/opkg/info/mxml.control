@@ -1,7 +1,7 @@
 Package: mxml
 Version: 2.9-1
 Depends: libc, librt, libpthread, zlib
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/libs/mxml
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/libs/mxml
 SourceName: mxml
 License: GPL-2.0
 LicenseFiles: COPYING

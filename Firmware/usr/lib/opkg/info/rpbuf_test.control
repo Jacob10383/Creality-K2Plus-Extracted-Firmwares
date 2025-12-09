@@ -1,7 +1,7 @@
 Package: rpbuf_test
 Version: 1.2.0-1
 Depends: libc, librt, libpthread, librpbuf
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/allwinner/common/rpbuf
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/allwinner/common/rpbuf
 SourceName: rpbuf_test
 Section: allwinner
 SourceDateEpoch: 1688356042

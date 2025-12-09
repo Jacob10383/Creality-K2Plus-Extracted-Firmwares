@@ -1,7 +1,7 @@
 Package: webrtc
 Version: 015cf07
 Depends: libc, librt, libpthread, libcrlog, cJSON, libnice, libwebsockets, libsrtp
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/webrtc
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/creality/webrtc
 SourceName: webrtc
 Section: creality
 SourceDateEpoch: 1716609699

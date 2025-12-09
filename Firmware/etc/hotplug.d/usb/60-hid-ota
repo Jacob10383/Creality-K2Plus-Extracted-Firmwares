@@ -1,0 +1,45 @@
+#!/bin/sh
+
+HID_DEV_LOG_PATH=/tmp/hid_script.log
+
+log_echo() {
+    echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*" >> $HID_DEV_LOG_PATH
+}
+
+#log_echo "ACTION: $ACTION, INTERFACE: $INTERFACE"
+
+[ "$ACTION" = "add" ] && [ "$INTERFACE" = "3/0/0" ] && {
+    [ -z "$DEVPATH" ] && exit 1  # ...... DEVPATH .....
+    DEVICENAME=$(basename "$DEVPATH")  # ...... 3-1:1.0
+    USB_DEV_PATH=$(dirname "$DEVPATH")  # 先获取上一级路径
+
+    log_echo "DEVICENAME: $DEVICENAME"
+
+    [ "$DEVICENAME" = "3-1:1.0" ] && {
+
+        HID_PATH="/sys/bus/usb/drivers/usbhid"
+        HID_DEV_PATH="/dev/hid/by-id"
+        mkdir -p $HID_DEV_PATH
+
+        vendor_id=$(cat /sys/$USB_DEV_PATH/idVendor 2>/dev/null) || { log_echo "错误: 找不到 idVendor"; exit 1; }
+        product_id=$(cat /sys/$USB_DEV_PATH/idProduct 2>/dev/null) || { log_echo "错误: 找不到 idProduct"; exit 1; }
+        device_name="hid-${vendor_id}-${product_id}"
+
+        log_echo "Detected HID device: $device_name"
+        
+        ln -s $HID_PATH/$DEVICENAME $HID_DEV_PATH/$device_name
+        echo $HID_DEV_PATH/$device_name > /tmp/.hid_$DEVICENAME
+        MDEV=$device_name ACTION=add /usr/bin/auto_hid.sh &
+    }
+}
+
+[ "$ACTION" = "remove" ] && [ "$INTERFACE" = "3/0/0" ] && {
+
+    [ -f "/tmp/.hid_$DEVICENAME" ] && {
+        node_path=$(cat /tmp/.hid_$DEVICENAME)
+    }
+    MDEV=${node_path##*/} ACTION=remove /usr/bin/auto_hid.sh
+    log_echo "Removing HID device: $node_path"
+    rm -f $node_path
+    rm -f /tmp/.hid_$DEVICENAME
+}

@@ -1,7 +1,7 @@
 Package: nginx
 Version: 1.19.6-2
 Depends: libc, librt, libpthread, nginx-ssl
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/net/nginx
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/net/nginx
 SourceName: nginx
 License: 2-clause BSD-like license
 Section: opt

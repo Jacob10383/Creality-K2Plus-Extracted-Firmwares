@@ -1,1 +1,5 @@
+/etc/hotplug.d/usb/60-hid-ota
+/usr/bin/cam_ota_auto_test.sh
 /usr/bin/cam_util
+/usr/bin/auto_hid.sh
+/usr/share/uvc/fw/UVC-UnionImage-CCX1F4013-250530V022_ota.bin

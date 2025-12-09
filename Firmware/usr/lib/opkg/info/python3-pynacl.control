@@ -1,7 +1,7 @@
 Package: python3-pynacl
 Version: 1.4.0-6
 Depends: libc, librt, libpthread, libsodium, python3-light, python3-cffi, python3-six
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/lang/python/python-pynacl
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/lang/python/python-pynacl
 SourceName: python3-pynacl
 License: Apache-2.0
 LicenseFiles: LICENSE

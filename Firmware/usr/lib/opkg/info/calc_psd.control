@@ -1,10 +1,10 @@
 Package: calc_psd
 Version: 1-1
 Depends: libc, librt, libpthread, kissfft, libstdcpp6
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/calc_psd
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/creality/calc_psd
 SourceName: calc_psd
 Section: creality
 SourceDateEpoch: 1702517923
 Architecture: arm_cortex-a7_neon
-Installed-Size: 14293
+Installed-Size: 14283
 Description:  with calc_psd support

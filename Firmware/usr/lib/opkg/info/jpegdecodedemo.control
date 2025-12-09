@@ -1,7 +1,7 @@
 Package: jpegdecodedemo
 Version: 1-1
 Depends: libc, librt, libpthread, libcedarx
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/allwinner/multimedia/tina_multimedia_demo/jpegdecodedemo
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/allwinner/multimedia/tina_multimedia_demo/jpegdecodedemo
 SourceName: jpegdecodedemo
 Section: utils
 SourceDateEpoch: 1688356042

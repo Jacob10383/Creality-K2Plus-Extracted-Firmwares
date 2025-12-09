@@ -1,7 +1,7 @@
 Package: python3-pyparsing
 Version: 2.4.7-2
 Depends: libc, librt, libpthread, python3-light
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/lang/python/python-pyparsing
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/lang/python/python-pyparsing
 SourceName: python3-pyparsing
 License: MIT
 LicenseFiles: LICENSE

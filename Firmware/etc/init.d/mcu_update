@@ -278,7 +278,7 @@ auto_update()
     local ret=0
 
     case $board in
-        "CR0CN240110C10" | "CR0CN240319C13" | "CR0CN240319C14")
+        "CR0CN240110C10" | "CR0CN240319C13" | "CR0CN240319C14" | "CR0CN200400C10")
             mcu0_serial=/dev/ttyS2
             bed0_serial=/dev/ttyS4
             noz0_serial=/dev/ttyS3
@@ -288,14 +288,12 @@ auto_update()
 
                 if [ "$model" = "CR-K1" -o "$model" = "CR-K1 Max" ]; then
                     fw_dir=K1
-                elif [ "$model" = "F008" -o \
-                        "$model" = "GS-03" -o \
-                        "$model" = "F028" ]; then
+                elif [ "$model" = "F008" ]; then
                     fw_dir=F008
                     skip_bed0=true
                     need_extruder=true
-                elif [ "$model" = "F012" -o "$model" = "F021" ]; then
-                    fw_dir=F008
+                elif [ "$model" = "F012" -o "$model" = "F021" -o "$model" = "F025" ]; then
+                    fw_dir=F012
                     skip_bed0=true
                     need_extruder=true
                 else
@@ -470,7 +468,7 @@ auto_update()
         json_close_object
 
         if [ "x$need_extruder" = "xtrue" ]; then
-            [ "x$extruder_version" = "xunknown" ] && extruder_version=
+	    [ "x$extruder_version" = "xunknown" ] && extruder_version=
             json_add_object "extruder"
             json_add_string "serial" $noz0_serial
             json_add_string "version" $extruder_version

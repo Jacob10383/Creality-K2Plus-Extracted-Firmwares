@@ -1,7 +1,7 @@
 Package: rsync
 Version: 3.2.3-3
 Depends: libc, librt, libpthread, libpopt0, zlib
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/net/rsync
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/net/rsync
 SourceName: rsync
 License: GPL-3.0-or-later
 LicenseFiles: COPYING

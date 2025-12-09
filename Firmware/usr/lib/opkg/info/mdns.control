@@ -1,7 +1,7 @@
 Package: mdns
 Version: 1.0.0
 Depends: libc, librt, libpthread
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/mdns
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/creality/mdns
 SourceName: mdns
 Section: creality
 SourceDateEpoch: 1709082834

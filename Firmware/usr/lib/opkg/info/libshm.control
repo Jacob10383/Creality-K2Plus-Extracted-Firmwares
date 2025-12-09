@@ -1,7 +1,7 @@
 Package: libshm
 Version: 5da1166
 Depends: libc, librt, libpthread
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/libshm
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/creality/libshm
 SourceName: libshm
 Section: creality
 SourceDateEpoch: 1709082836

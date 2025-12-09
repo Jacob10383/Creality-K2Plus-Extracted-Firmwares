@@ -1,7 +1,7 @@
 Package: libxml2
 Version: 2.9.9-3
 Depends: libc, librt, libpthread, libpthread, zlib
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/libs/libxml2
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/libs/libxml2
 SourceName: libxml2
 License: MIT
 LicenseFiles: COPYING

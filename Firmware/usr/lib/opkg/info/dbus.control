@@ -1,7 +1,7 @@
 Package: dbus
 Version: 1.12.12-1
 Depends: libc, librt, libpthread, libexpat, libdbus
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/utils/dbus
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/utils/dbus
 SourceName: dbus
 License: AFL-2.1
 Section: utils

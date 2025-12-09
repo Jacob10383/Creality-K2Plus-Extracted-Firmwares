@@ -1,7 +1,7 @@
 Package: libx264
 Version: 2020-10-26-1
 Depends: libc, librt, libpthread, libpthread
-Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/feeds/libs/libx264
+Source: /data/112052/code/SDK/kl_C4408_V2/openwrt/package/feeds/libs/libx264
 SourceName: libx264
 License: GPL-2.0-or-later
 LicenseFiles: COPYING
