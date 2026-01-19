@@ -1,6 +1,6 @@
 Package: allwinner_uvc
 Version: 2cae271
-Depends: libc, librt, libpthread, libcrlog, libopenssl1.1, libshm, webrtc, libuapi, libcedarx, ncnn_yolov5
+Depends: libc, librt, libpthread, libcrlog, libopenssl1.1, libshm, webrtc, libuapi, libdelivery, libcedarx, ncnn_yolov5
 Source: /opt/wuhui/code/creality/Pre-release/kl_C4408_V2_F008/openwrt/package/creality/cam_app
 SourceName: allwinner_uvc
 Section: creality
