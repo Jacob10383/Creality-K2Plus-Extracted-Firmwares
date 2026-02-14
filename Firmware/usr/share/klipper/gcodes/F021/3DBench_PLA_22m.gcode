@@ -104031,7 +104031,7 @@ M73 P100 R0
 ; print_settings_id = 050100-0.20mm Standard @Creality K2 Pro 0.4 nozzleH12-1.1(F021-K2船舷纹稍微加重内部船尾无缝-3DBenchy.3mf)
 ; printable_area = 0x0,260x0,260x260,0x260
 ; printable_height = 260
-; printer_model = Creality K2 Pro
+; printer_model = Creality K2
 ; printer_notes = 
 ; printer_settings_id = Creality K2 Pro 0.4 nozzle
 ; printer_structure = undefine

@@ -95247,7 +95247,7 @@ M73 P100 R0
 ; print_settings_id = 25-0.20mm Standard @Creality F025 0.4 nozzle
 ; printable_area = 0x0,300x0,300x300,0x300
 ; printable_height = 200
-; printer_model = Creality F025
+; printer_model = Creality Sermoon M300
 ; printer_notes = 
 ; printer_settings_id = Creality F025 0.4 nozzle
 ; printer_structure = undefine

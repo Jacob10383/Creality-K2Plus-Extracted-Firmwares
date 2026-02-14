@@ -1358,6 +1358,7 @@ class VirtualSD:
             end_time = interval_end_time = self.reactor.monotonic()
             ret, self.ignore_M = self.ignore_M8200_code(line, self.ignore_M)
             if ret:
+                self.file_position = self.next_file_position
                 continue
             # 更新当前打印信息,已打印时间、剩余时间等, 断电续打开关开启的情况下才进行下面的判断
             if power_loss_switch and self.count_line % 4999 == 0:

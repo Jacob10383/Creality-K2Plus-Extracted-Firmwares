@@ -74,64 +74,75 @@ Registers = {
     "PWMCONF":                  0x70,
 }
 
-# ReadRegisters = [
-#     "GCONF", "CHOPCONF", "GSTAT", "DRV_STATUS", "IOIN", "PLL",
-#     "MSCNT", "MSCURACT", "TSTEP"
-# ]
-
 ReadRegisters = [
-    "GCONF", "DIAG_CONF", "DRV_CONF", "IHOLD_IRUN", "TPOWERDOWN", "TPWMTHRS",
-    "UDC_CONF", "CHOPCONF", "COOLCONF", "PWMCONF", "GSTAT", "DRV_STATUS", "PLL", "IOIN",
-    "SG_SEQ_STOP_STAT", "MSCNT"
+    "GCONF",
+    "GSTAT",
+    "DIAG_CONF",
+    "DIAG_DAC_CONF",
+    "IOIN",
+    "DRV_CONF",
+    "PLL",
+    "IHOLD_IRUN",
+    "TPOWERDOWN",
+    "TSTEP",
+    "TPWMTHRS",
+    "TCOOLTHRS",
+    "THIGH",
+    "TSGP_LOW_VEL_THRS",
+    "T_RCOIL_MEAS",
+    "TUDCSTEP",
+    "UDC_CONF",
+    "STEPS_LOST",
+    "SW_MODE",
+    "SG_SEQ_STOP_STAT",
+    "ENCMODE",
+    "X_ENC",
+    "ENC_CONST",
+    "ENC_STATUS",
+    "ENC_LATCH",
+    "ENC_DEVIATION",
+    "CURRENT_PI_REG",
+    "ANGLE_PI_REG",
+    "CUR_ANGLE_LIMIT",
+    "ANGLE_LOWER_LIMIT",
+    "CUR_ANGLE_MEAS",
+    "PI_RESULTS",
+    "COIL_INDUCT",
+    "R_COIL",
+    "R_COIL_USER",
+    "SGP_CONF",
+    "SGP_IND_2_3",
+    "SGP_IND_0_1",
+    "INDUCTANCE_VOLTAGE",
+    "SGP_BEMF",
+    "COOLSTEPPLUS_CONF",
+    "COOLSTEPPLUS_PI_REG",
+    "COOLSTEPPLUS_PI_DOWN",
+    "COOLSTEPPLUS_RESERVE_CONF",
+    "COOLSTEPPLUS_LOAD_RESERVE",
+    "TSTEP_VELOCITY",
+    "ADC_VSUPPLY_TEMP",
+    "ADC_I",
+    "OTW_OV_VTH",
+    "MSLUT0",
+    "MSLUT1",
+    "MSLUT2",
+    "MSLUT3",
+    "MSLUT4",
+    "MSLUT5",
+    "MSLUT6",
+    "MSLUT7",
+    "MSLUTSEL",
+    "MSLUTSTART",
+    "MSCNT",
+    "MSCURACT",
+    "CHOPCONF",
+    "COOLCONF",
+    "DRV_STATUS",
+    "PWMCONF",
 ]
 
 Fields = {}
-Fields["COOLCONF"] = {
-    "semin":                    0x0F << 0,
-    "seup":                     0x03 << 5,
-    "semax":                    0x0F << 8,
-    "sedn":                     0x07 << 13,
-    "seimin":                   0x01 << 15,
-    "sgt":                      0x7F << 16,
-    "thigh_sg_off":             0x01 << 23,
-    "sfilt":                    0x01 << 24
-}
-Fields["CHOPCONF"] = {
-    "toff":                     0x0F << 0,
-    "hstrt":                    0x07 << 4,
-    "hend":                     0x0F << 7,
-    "fd3":                      0x01 << 11,
-    "disfdcc":                  0x01 << 12,
-    "chm":                      0x01 << 14,
-    "tbl":                      0x03 << 15,
-    "tpfd":                     0x0F << 20, # midrange resonances
-    "mres":                     0x0F << 24,
-    "intpol":                   0x01 << 28,
-    "dedge":                    0x01 << 29
-}
-Fields["DRV_CONF"] = {
-    "current_range":            0x03 << 0,
-    "current_range_scale":      0x03 << 2,
-    "clope_control":            0x03 << 4,
-}
-Fields["DRV_STATUS"] = {
-    "sg_result":                0x3FF << 0,
-    "seq_stopped":              0x01 << 10,
-    "ov":                       0x01 << 11,
-    "s2vsa":                    0x01 << 12,
-    "s2vsb":                    0x01 << 13,
-    "stealth":                  0x01 << 14,
-    "cs_actual":                0xFF << 16,
-    "stallguard":               0x01 << 24,
-    "ot":                       0x01 << 25,
-    "otpw":                     0x01 << 26,
-    "s2ga":                     0x01 << 27,
-    "s2gb":                     0x01 << 28,
-    "ola":                      0x01 << 29,
-    "olb":                      0x01 << 30,
-    "stst":                     0x01 << 31
-}
-
 Fields["GCONF"] = {
     "fast_standstill":          0x01 << 0,
     # "en_stealthc":              0x01 << 1, # datasheet的叫法
@@ -153,10 +164,43 @@ Fields["GSTAT"] = {
     "vm_uvlo":                  0x01 << 4,
     "vccio_uv":                 0x01 << 5
 }
-Fields["IHOLD_IRUN"] = {
-    "ihold":                    0xFF << 0,
-    "irun":                     0xFF << 8,
-    "iholddelay":               0x3F << 16
+Fields["DIAG_CONF"] = {
+    "do0_error":                0x01 << 0,
+    "do0_otpw":                 0x01 << 1,
+    "do0_stall":                0x01 << 2,
+    "do0_index":                0x01 << 3,
+    "do0_step":                 0x01 << 4,
+    "do0_dir":                  0x01 << 5,
+    "do0_xcomp":                0x01 << 6,
+    "do0_ov":                   0x01 << 7,
+    "do0_dcustep":              0x01 << 8,
+    "do0_ev_stop_ref":          0x01 << 9,
+    "do0_ev_stop_sg":           0x01 << 10,
+    "do0_ev_pos_reached":       0x01 << 11,
+    "do0_ev_n_deviation":       0x01 << 12,
+    "do1_error":                0x01 << 13,
+    "do1_otpw":                 0x01 << 14,
+    "do1_stall":                0x01 << 15,
+    "do1_index":                0x01 << 16,
+    "do1_step":                 0x01 << 17,
+    "do1_dir":                  0x01 << 18,
+    "do1_xcomp":                0x01 << 19,
+    "do1_ov":                   0x01 << 20,
+    "do1_dcustep":              0x01 << 21,
+    "do1_ev_stop_ref":          0x01 << 22,
+    "do1_ev_stop_sg":           0x01 << 23,
+    "do1_ev_pos_reached":       0x01 << 24,
+    "do1_ev_n_deviation":       0x01 << 25,
+    "do0_nOD_PP":               0x01 << 28,
+    "do0_invPP":                0x01 << 29,
+    "do1_nOD_PP":               0x01 << 30,
+    "do1_invPP":                0x01 << 31,
+}
+Fields["DIAG_DAC_CONF"] = {
+    "do0_scope_en":             0x01 << 0,
+    "do0_scope_sel":            0x1F << 4,
+    "do1_scope_en":             0x01 << 12,
+    "do1_scope_sel":            0x1F << 16,
 }
 Fields["IOIN"] = {
     "refl":                     0x01 << 0,
@@ -168,6 +212,229 @@ Fields["IOIN"] = {
     "ext_res_det":              0x01 << 13,
     "ext_clk":                  0x01 << 14,
     "silicon_rv":               0x03 << 16
+}
+Fields["DRV_CONF"] = {
+    "current_range":            0x03 << 0,
+    "current_range_scale":      0x03 << 2,
+    "slope_control":            0x03 << 4,
+}
+Fields["PLL"] = {
+    "commit":                   0x1 << 0,
+    "ext_not_int":              0x1 << 1,
+    "clk_sys_sel":              0x1 << 2,
+    "adc_clk_ena":              0x3 << 3,
+    "clock_divider":            0x1f << 5,
+    "clk_fsm_ena":              0x1 << 10,
+    "clk_1mo_tmo":              0x1 << 12,
+    "clk_loss":                 0x1 << 13,
+    "clk_is_stuck":             0x1 << 14,
+    "pll_lock_loss":            0x1 << 15
+}
+Fields["IHOLD_IRUN"] = {
+    "ihold":                    0xFF << 0,
+    "irun":                     0xFF << 8,
+    "iholddelay":               0x3F << 16,
+    "irundelay":                0xF << 24,
+}
+Fields["TPOWERDOWN"] = {
+    "tpowerdown":               0xff << 0
+}
+Fields["TSTEP"] = {
+    "tstep":                    0xfffff << 0
+}
+Fields["TPWMTHRS"] = {
+    "tpwmthrs":                 0xfffff << 0
+}
+Fields["TCOOLTHRS"] = {
+    "tcoolthrs":                0xfffff << 0
+}
+Fields["THIGH"] = {
+    "thigh":                    0xfffff << 0
+}
+Fields["TSGP_LOW_VEL_THRS"] = {
+    "TSGP_LOW_VEL_THRS":        0xfffff << 0
+}
+Fields["T_RCOIL_MEAS"] = {
+    "T_RCOIL_MEAS":             0xfffff << 0
+}
+Fields["TUDCSTEP"] = {
+    "TUDCSTEP":                 0xfffff << 0
+}
+Fields["UDC_CONF"] = {
+    "DECEL_THRS":               0x0f << 0,
+    "ACCEL_THRS":               0x0f << 4,
+    "udc_enable":               0x01 << 8,
+}
+Fields["STEPS_LOST"] = {
+    "STEPS_LOST":               0xfffff << 0,
+}
+Fields["SW_MODE"] = {
+    "stop_l_enable":            0x01 << 0,
+    "stop_r_enable":            0x01 << 1,
+    "pol_stop_l":               0x01 << 2,
+    "pol_stop_r":               0x01 << 3,
+    "swap_lr":                  0x01 << 4,
+    "latch_l_active":           0x01 << 5,
+    "latch_l_inactive":         0x01 << 6,
+    "latch_r_active":           0x01 << 7,
+    "latch_r_inactive":         0x01 << 8,
+    "en_latch_encoder":         0x01 << 9,
+    "sg_stop":                  0x01 << 10,
+    "en_softstop":              0x01 << 11,
+    "en_virtual_stio_l":        0x01 << 12,
+    "en_virtual_stio_r":        0x01 << 13,
+    "virtual_stop_enc":         0x01 << 14,
+    "hard_stop_clr_cur_int":    0x01 << 15,
+}
+Fields["SG_SEQ_STOP_STAT"] = {
+    "status_stop_l":            0x01 << 0,
+    "status_stop_r":            0x01 << 1,
+    "status_latch_l":           0x01 << 2,
+    "status_latch_r":           0x01 << 3,
+    "event_latch_l":            0x01 << 4,
+    "event_latch_r":            0x01 << 5,
+    "event_stop_sg":            0x01 << 6,
+    "event_pos_reached":        0x01 << 7,
+    "velocity_reached":         0x01 << 8,
+    "position_reached":         0x01 << 9,
+    "vzero":                    0x01 << 10,
+    "t_zerowait_active":        0x01 << 11,
+    "second_move":              0x01 << 12,
+    "status_sg":                0x01 << 13,
+    "status_virtual_stop_r":    0x01 << 14,
+    "status_virtual_stop_l":    0x01 << 15,
+}
+Fields["ENCMODE"] = {
+    "pol_A":                    0x01 << 0,
+    "pol_B":                    0x01 << 1,
+    "pol_N":                    0x01 << 2,
+    "ignore_AB":                0x01 << 3,
+    "clr_cont":                 0x01 << 4,
+    "clr_once":                 0x01 << 5,
+    "pos_neg_edge":             0x03 << 6,
+    "clr_enc_x":                0x01 << 8,
+    "latch_x_act":              0x01 << 9,
+    "enc_sel_decimal":          0x01 << 10,
+    "nBEMF_ABN_SEL":            0x01 << 11,
+    "bemf_hyst":                0x07 << 12,
+    "BEMF_BLANK_TIME":          0xff << 16,
+    "BEMF_FILTER_SEL":          0x03 << 28,
+}
+Fields["X_ENC"] = {
+    "X_ENC":                    0xffffffff
+}
+Fields["ENC_CONST"] = {
+    "ENC_CONST":                0xffffffff
+}
+Fields["ENC_STATUS"] = {
+    "n_event":                  0x01 << 0,
+    "deviation_wam":            0x01 << 1,
+}
+Fields["ENC_LATCH"] = {
+    "ENC_LATCH":                0xffffffff
+}
+Fields["ENC_DEVIATION"] = {
+    "ENC_DEVIATION":            0xfffff << 0
+}
+Fields["CURRENT_PI_REG"] = {
+    "cur_p":                    0xfff << 0,
+    "cur_i":                    0xfff << 16,
+}
+Fields["ANGLE_PI_REG"] = {
+    "angle_p":                  0xfff << 0,
+    "angle_i":                  0xfff << 16,
+}
+Fields["CUR_ANGLE_LIMIT"] = {
+    "ANGLE_PI_LIMIT":           0x3ff << 0,
+    "angle_pi_int_pos_clip":    0x01 << 12,
+    "angle_pi_int_neg_clip":    0x01 << 13,
+    "angle_pi_pos_clip":        0x01 << 14,
+    "angle_pi_neg_clip":        0x01 << 15,
+    "CUR_PI_LIMIT":             0x3ff << 16,
+    "cur_pi_int_pos_clip":      0x01 << 28,
+    "cur_pi_int_neg_clip":      0x01 << 29,
+    "cur_pi_pos_clip":          0x01 << 30,
+    "cur_pi_neg_clip":          0x01 << 31,
+}
+Fields["ANGLE_LOWER_LIMIT"] = {
+    "ANGLE_LOWER_I_LIMIT":      0x3ff << 0,
+    "ANGLE_ERROR":              0x3ff << 16,
+}
+Fields["CUR_ANGLE_MEAS"] = {
+    "AMPL_MEAS":                0xfff << 0,
+    "ANGLE_MEAS":               0xfff << 16,
+}
+Fields["PI_RESULTS"] = {
+    "PWM_CALC":                 0x1fff << 0,
+    "ANGLE_CORR_CAL":           0x2ff << 16,
+}
+Fields["COIL_INDUCT"] = {
+    "coil_induct":              0x7fff << 0,
+    "rcoil_manual":             0x01 << 16,
+    "rcoil_thermal_coupling":   0x01 << 17,
+}
+Fields["R_COIL"] = {
+    "R_COIL_AUTO_B":            0xfff << 0,
+    "R_COIL_AUTO_A":            0xfff << 16,
+}
+Fields["R_COIL_USER"] = {
+    "R_COIL_USER_B":            0xfff << 0,
+    "R_COIL_USER_A":            0xfff << 16,
+}
+Fields["SGP_CONF"] = {
+    "SGP_THRS":                 0x1f << 0,
+    "sgp_filt_en":              0x01 << 12,
+    "sgp_low_vel_freeze":       0x01 << 13,
+    "sgp_clear_cur_pi":         0x01 << 14,
+    "SGP_LOW_VEL_SLOPE":        0xff << 16,
+    "SGP_LOW_VEL_CNTS":         0x03 << 28,
+}
+Fields["SGP_IND_2_3"] = {
+    "SGP_IND_2":                0x3ff << 0,
+    "SGP_IND_3":                0x3ff << 16,
+}
+Fields["SGP_IND_0_1"] = {
+    "SGP_IND_0":                0x3ff << 0,
+    "SGP_IND_1":                0x3ff << 16,
+}
+Fields["INDUCTANCE_VOLTAGE"] = {
+    "UL_B":                     0xfff << 0,
+    "UL_B":                     0xfff << 16,
+}
+Fields["SGP_BEMF"] = {
+    "SGP_RAW":                  0x3ff << 0,
+    "SGP_ABS":                  0xfff << 16,
+}
+Fields["COOLSTEPPLUS_CONF"] = {
+    "COOL_CUR_DIV":             0xf << 0,
+    "load_filt_en":             0x01 << 4,
+}
+Fields["COOLSTEPPLUS_PI_REG"] = {
+    "COOLSTEP_P":               0xfff << 0,
+    "COOLSTEP_I":               0x3f << 16,
+}
+Fields["COOLSTEPPLUS_PI_DOWN"] = {
+    "COOL_PI_DOWN_LIMIT":       0xfff << 0,
+    "COOL_PI_OFF_SPEED":        0xfff << 16,
+}
+Fields["COOLSTEPPLUS_LOAD_RESERVE"] = {
+    "SGP_RESULT":               0x3ff << 0,
+    "COOLSTEP_LOAD_RESERVE":    0xfff << 16,
+}
+Fields["TSTEP_VELOCITY"] = {
+    "TSTEP_VELOCITY":           0x7fffff << 0,
+}
+Fields["ADC_VSUPPLY_TEMP"] = {
+    "ADC_VSUPPLY":              0x1ff << 0,
+    "ADC_TEMP":                 0x1ff << 16,
+}
+Fields["ADC_I"] = {
+    "ADC_I_A":                  0xfff << 0,
+    "ADC_I_B":                  0xfff << 16,
+}
+Fields["OTW_OV_VTH"] = {
+    "OVERVOLTAGE_VTH":          0x1ff << 0,
+    "OVERTEMPPREWARNING":       0x1ff << 16,
 }
 Fields["MSLUT0"] = {
     "mslut0":                   0xffffffff
@@ -214,6 +481,46 @@ Fields["MSCURACT"] = {
     "cur_a":                    0x1ff << 0,
     "cur_b":                    0x1ff << 16
 }
+Fields["CHOPCONF"] = {
+    "toff":                     0x0F << 0,
+    "hstrt":                    0x07 << 4,
+    "hend":                     0x0F << 7,
+    "fd3":                      0x01 << 11,
+    "disfdcc":                  0x01 << 12,
+    "chm":                      0x01 << 14,
+    "tbl":                      0x03 << 15,
+    "tpfd":                     0x0F << 20, # midrange resonances
+    "mres":                     0x0F << 24,
+    "intpol":                   0x01 << 28,
+    "dedge":                    0x01 << 29
+}
+Fields["COOLCONF"] = {
+    "semin":                    0x0F << 0,
+    "seup":                     0x03 << 5,
+    "semax":                    0x0F << 8,
+    "sedn":                     0x07 << 13,
+    "seimin":                   0x01 << 15,
+    "sgt":                      0x7F << 16,
+    "thigh_sg_off":             0x01 << 23,
+    "sfilt":                    0x01 << 24
+}
+Fields["DRV_STATUS"] = {
+    "sg_result":                0x3FF << 0,
+    "seq_stopped":              0x01 << 10,
+    "ov":                       0x01 << 11,
+    "s2vsa":                    0x01 << 12,
+    "s2vsb":                    0x01 << 13,
+    "stealth":                  0x01 << 14,
+    "cs_actual":                0xFF << 16,
+    "stallguard":               0x01 << 24,
+    "ot":                       0x01 << 25,
+    "otpw":                     0x01 << 26,
+    "s2ga":                     0x01 << 27,
+    "s2gb":                     0x01 << 28,
+    "ola":                      0x01 << 29,
+    "olb":                      0x01 << 30,
+    "stst":                     0x01 << 31
+}
 Fields["PWMCONF"] = {
     "pwm_freq":                 0x0F << 0,
     "freewheel":                0x03 << 4,
@@ -221,34 +528,7 @@ Fields["PWMCONF"] = {
     "sd_on_meas_lo":            0x01 << 12,
     "sd_on_meas_hi":            0x01 << 16,
 }
-Fields["TPOWERDOWN"] = {
-    "tpowerdown":               0xff << 0
-}
-Fields["TPWMTHRS"] = {
-    "tpwmthrs":                 0xfffff << 0
-}
-Fields["TCOOLTHRS"] = {
-    "tcoolthrs":                0xfffff << 0
-}
-Fields["TSTEP"] = {
-    "tstep":                    0xfffff << 0
-}
-Fields["THIGH"] = {
-    "thigh":                    0xfffff << 0
-}
 
-Fields["PLL"] = {
-    "commit":                   0x1 << 0,
-    "ext_not_int":              0x1 << 1,
-    "clk_sys_sel":              0x1 << 2,
-    "adc_clk_ena":              0x3 << 3,
-    "clock_divider":            0x1f << 5,
-    "clk_fsm_ena":              0x1 << 10,
-    "clk_1mo_tmo":              0x1 << 12,
-    "clk_loss":                 0x1 << 13,
-    "clk_is_stuck":             0x1 << 14,
-    "pll_lock_loss":            0x1 << 15
-}
 
 SignedFields = ["cur_a", "cur_b", "sgt", "pwm_scale_auto"]
 
@@ -356,6 +636,8 @@ class TMC2262:
         self.fields = tmc.FieldHelper(Fields, SignedFields, FieldFormatters)
         set_config_field = self.fields.set_config_field
         #   GCONF
+        set_config_field(config, "small_hysteresis", True)
+        set_config_field(config, "en_pwm_mode", True)
         set_config_field(config, "multistep_filt", True)
         set_config_field(config, "step_dir", True)
         #   PLL (tmc2262 special register)
@@ -398,7 +680,8 @@ class TMC2262:
         set_config_field(config, "sgt", 0)
         set_config_field(config, "sfilt", 0)
         #   IHOLDIRUN
-        set_config_field(config, "iholddelay", 6)
+        set_config_field(config, "iholddelay", 7)
+        set_config_field(config, "irundelay", 4)
         #   PWMCONF
         set_config_field(config, "pwm_freq", 0)
         set_config_field(config, "freewheel", 0)
@@ -406,6 +689,18 @@ class TMC2262:
         set_config_field(config, "tpowerdown", 10)
         #   IOIN
         set_config_field(config, "drv_enn", False)
+        #   DRV_CONF
+        set_config_field(config, "slope_control", 3)
+        # CURRENT_PI_REG
+        set_config_field(config, "cur_p", 550)
+        set_config_field(config, "cur_i", 137)
+        # ANGLE_PI_REG
+        set_config_field(config, "angle_p", 200)
+        set_config_field(config, "angle_i", 50)
+        # COIL_INDUCT
+        coil_induct = config.getint("coil_induct", 0.0) # 相电感 单位：uH
+        if coil_induct:
+            set_config_field(config, "coil_induct", coil_induct)
 
 def load_config_prefix(config):
     return TMC2262(config)

@@ -1,7 +1,7 @@
-/etc/config/smartlinkd
-/etc/config/system
 /etc/config/network
+/etc/config/smartlinkd
 /etc/config/fstab
+/etc/config/system
 /etc/config/network
 /etc/config/system
 /etc/ethers

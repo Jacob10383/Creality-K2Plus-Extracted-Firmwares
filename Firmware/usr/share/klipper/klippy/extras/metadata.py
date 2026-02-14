@@ -411,11 +411,11 @@ class PrusaSlicer(BaseSlicer):
         flush_multiplier = None
         flush_volumes_matrix = None
         # Search for flush_multiplier value
-        flush_multiplier_match = re.search(r'flush_multiplier\s*=\s*([\d.]+)', self.footer_data)
+        flush_multiplier_match = re.search(r'; flush_multiplier\s*=\s*([\d.]+)', self.footer_data)
         if flush_multiplier_match:
             flush_multiplier = float(flush_multiplier_match.group(1))
         # Search for flush_volumes_matrix value
-        flush_volumes_matrix_match = re.search(r'flush_volumes_matrix\s*=\s*([^;]+)', self.footer_data)
+        flush_volumes_matrix_match = re.search(r'; flush_volumes_matrix\s*=\s*([^;]+)', self.footer_data)
         if flush_volumes_matrix_match:
             flush_volumes_matrix = [int(x) for x in flush_volumes_matrix_match.group(1).strip().split(',')]
         # return
@@ -1047,15 +1047,15 @@ class Creality(BaseSlicer):
         flush_multiplier = None
         flush_volumes_matrix = None
         # Search for flush_multiplier value
-        flush_multiplier_match = re.search(r'flush_multiplier\s*=\s*([\d.]+)', self.header_data)
+        flush_multiplier_match = re.search(r'; flush_multiplier\s*=\s*([\d.]+)', self.header_data)
         if not flush_multiplier_match:
-            flush_multiplier_match = re.search(r'flush_multiplier\s*=\s*([\d.]+)', self.footer_data)
+            flush_multiplier_match = re.search(r'; flush_multiplier\s*=\s*([\d.]+)', self.footer_data)
         if flush_multiplier_match:
             flush_multiplier = float(flush_multiplier_match.group(1))
         # Search for flush_volumes_matrix value
-        flush_volumes_matrix_match = re.search(r'flush_volumes_matrix\s*=\s*([^;]+)', self.header_data)
+        flush_volumes_matrix_match = re.search(r'; flush_volumes_matrix\s*=\s*([^;]+)', self.header_data)
         if not flush_volumes_matrix_match:
-            flush_volumes_matrix_match = re.search(r'flush_volumes_matrix\s*=\s*([^;]+)', self.footer_data)
+            flush_volumes_matrix_match = re.search(r'; flush_volumes_matrix\s*=\s*([^;]+)', self.footer_data)
         if flush_volumes_matrix_match:
             flush_volumes_matrix = [int(float(x)) for x in flush_volumes_matrix_match.group(1).strip().split(',')]
         # return

@@ -542,10 +542,10 @@ class QueryStatusHelper:
                 cres = {}
                 for ri in req_items:
                     rd = res.get(ri, None)
-                    # if is_query or rd != lres.get(ri):
-                    #     cres[ri] = rd
-                    if is_query or not self._deep_compare(lres.get(ri), rd):
+                    if is_query or rd != lres.get(ri):
                         cres[ri] = rd
+                    # if is_query or not self._deep_compare(lres.get(ri), rd):
+                    #     cres[ri] = rd
                 if cres or is_query:
                     cquery[obj_name] = cres
             # Send data
