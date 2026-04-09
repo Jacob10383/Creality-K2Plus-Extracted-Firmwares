@@ -9,9 +9,7 @@
 /etc/sysConfig/UIResource/K1/zoffset_Add_Normal.png
 /etc/sysConfig/UIResource/K1/selfchecking_1.png
 /etc/sysConfig/UIResource/K1/img_test_tip_k2_machine.png
-/etc/sysConfig/UIResource/K1/fan_schematic_k2pro_longword.png
 /etc/sysConfig/UIResource/K1/multicolor_box_k2pro.png
-/etc/sysConfig/UIResource/K1/img_f028_fan_schematic.png
 /etc/sysConfig/UIResource/K1/belt_install_left_tool.png
 /etc/sysConfig/UIResource/K1/img_cfs_humidity_normal.png
 /etc/sysConfig/audio/chinese/1.button_beep.wav
@@ -30,9 +28,11 @@
 /etc/sysConfig/UIResource/K1/SortDownSelect.png
 /etc/sysConfig/UIResource/K1/img_fila_k2pro.png
 /usr/bin/audio-server
+/etc/sysConfig/UIResource/K1/img_ver_check_failed.png
 /etc/sysConfig/UIResource/K1/localexporttips.png
 /etc/sysConfig/UIResource/K1/img_humidity_arrow.png
 /usr/bin/Monitor
+/etc/sysConfig/UIResource/K1/img_test_tip_GS04_machine.png
 /etc/sysConfig/UIResource/K1/belt_uninstall_right_tool.png
 /etc/sysConfig/UIResource/K1/switch_axis_test_step_dir.png
 /etc/init.d/app
@@ -54,10 +54,11 @@
 /etc/sysConfig/defData/laser_offset_correction_0.2mm.gcode
 /etc/sysConfig/UIResource/K1/cut_test_vector.png
 /etc/sysConfig/UIResource/K1/usedtimeicon.png
-/etc/sysConfig/UIResource/K1/fan_schematic_k2_s1_longword.png
 /etc/sysConfig/defData/cert/server.key
 /etc/sysConfig/UIResource/K1/img_fila_k2_s1.png
+/etc/sysConfig/defData/material/GS-04_material_database.json
 /etc/sysConfig/UIResource/K1/TilteLeftstyle.png
+/etc/sysConfig/UIResource/K1/img_clean_nozzle_dir.png
 /etc/sysConfig/UIResource/K1/Subtract.png
 /etc/sysConfig/UIResource/K1/state_error.png
 /etc/sysConfig/UIResource/K1/TitleRightstyle.png
@@ -84,15 +85,18 @@
 /etc/sysConfig/defData/line_width_height.gcode
 /etc/sysConfig/UIResource/K1/zoffset_Add_Disable.png
 /etc/sysConfig/UIResource/K1/gcode_weight_flag.png
+/etc/sysConfig/UIResource/K1/img_GS04_machine.png
 /etc/sysConfig/UIResource/K1/layers.png
 /etc/sysConfig/audio/chinese/1.sound_button_crisp.wav
 /etc/sysConfig/UIResource/K1/img_new_pause.png
 /usr/bin/burn-server
 /etc/sysConfig/UIResource/K1/ui_img_dir_down.png
 /etc/sysConfig/UIResource/K1/SortIcon.png
+/etc/sysConfig/UIResource/K1/img_version_check_success.png
 /etc/sysConfig/UIResource/K1/img_boot0_K2.png
 /etc/sysConfig/UIResource/K1/zoffset_Sub_Disable.png
 /etc/sysConfig/UIResource/K1/objectStateCancle.png
+/etc/sysConfig/UIResource/K1/img_spool_holder_GS04.png
 /etc/sysConfig/UIResource/K1/objectStatePrinting.png
 /etc/sysConfig/UIResource/K1/nuzzle.png
 /etc/sysConfig/UIResource/K1/multicolor_box_k2.png
@@ -145,7 +149,9 @@
 /etc/sysConfig/UIResource/K1/img_f028_spool_holder.png
 /etc/sysConfig/UIResource/K1/nozzle_fila_empty.png
 /etc/sysConfig/UIResource/K1/auto_refill_prev_page.png
+/etc/sysConfig/UIResource/K1/img_print_to_do_state.gif
 /etc/sysConfig/UIResource/K1/img_fila_k2plus.png
+/etc/sysConfig/UIResource/K1/print_proccess_mask.png
 /etc/sysConfig/UIResource/K1/img_test_tip_f028_machine.png
 /etc/sysConfig/UIResource/K1/img_new_light.png
 /etc/sysConfig/UIResource/K1/wifi_state_2.png
@@ -158,7 +164,6 @@
 /etc/sysConfig/UIResource/K1/img_multi_color_guide_3.png
 /usr/bin/display-server
 /etc/sysConfig/UIResource/K1/filamentTip.png
-/etc/sysConfig/UIResource/K1/fan_schematic.png
 /etc/sysConfig/UIResource/K1/img_humidity_little_height_rangle.png
 /etc/sysConfig/UIResource/K1/SwitchAxisStep2.png
 /etc/sysConfig/UIResource/K1/img_in_progress.gif
@@ -172,6 +177,7 @@
 /etc/sysConfig/UIResource/K1/img_new_camera.png
 /etc/sysConfig/UIResource/K1/K1C_Machine.png
 /etc/sysConfig/UIResource/K1/turn_left.png
+/etc/sysConfig/UIResource/K1/img_clean_nozzle_heating.png
 /usr/bin/master-server
 /etc/sysConfig/defData/SourceHanSansCN-Normal.otf
 /etc/sysConfig/UIResource/K1/wifi_state_3.png
@@ -180,6 +186,7 @@
 /etc/sysConfig/UIResource/K1/SortSelect.png
 /etc/sysConfig/UIResource/K1/Add.png
 /etc/sysConfig/UIResource/K1/img_cfs_hub_indicator_light.png
+/etc/sysConfig/UIResource/K1/img_clean_nozzle_cooling.png
 /etc/sysConfig/UIResource/K1/hotendicon.png
 /etc/sysConfig/UIResource/K1/auto_refill_next_page.png
 /usr/bin/app-server
@@ -201,7 +208,6 @@
 /etc/sysConfig/UIResource/K1/print_completed.png
 /etc/sysConfig/UIResource/K1/zoffset_Sub_Focus.png
 /etc/sysConfig/UIResource/K1_Max/img_polygon.png
-/etc/sysConfig/UIResource/K1/fan_schematic_k2_longword.png
 /etc/sysConfig/UIResource/K1/EstateRunout.png
 /etc/sysConfig/UIResource/K1/img_small_default_user_avatar.png
 /etc/sysConfig/UIResource/K1/wait.png

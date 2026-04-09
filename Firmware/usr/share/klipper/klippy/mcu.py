@@ -68,7 +68,7 @@ class MCU_trsync:
             "trsync_set_timeout oid=%c clock=%u")
         trigger_tag = mcu.lookup_command_tag("trsync_trigger oid=%c reason=%c")
         state_tag = mcu.lookup_command_tag(
-            "trsync_state oid=%c can_trigger=%c trigger_reason=%c clock=%u")
+            "trsync_state oid=%c can_trigger=%c trigger_reason=%c clock=%u") & 0xffffffff
         ffi_main, ffi_lib = chelper.get_ffi()
         self._trdispatch_mcu = ffi_main.gc(ffi_lib.trdispatch_mcu_alloc(
             self._trdispatch, mcu._serial.serialqueue, # XXX
@@ -634,10 +634,14 @@ class MCU:
         printer.register_event_handler("klippy:connect", self._connect)
         printer.register_event_handler("klippy:shutdown", self._shutdown)
         printer.register_event_handler("klippy:disconnect", self._disconnect)
+        printer.register_event_handler('klippy:ready', self._handle_ready)
+
+    def _handle_ready(self):
         self.cur_code_key = ""
         if self._name == "mcu" or self._name == "nozzle_mcu":
             self._do_query_timer = self._reactor.register_timer(self._do_query)
             self._reactor.update_timer(self._do_query_timer, self._reactor.NOW)
+
     def _do_query(self, eventtime):
         try:
             mcu_temp_obj = self._printer.lookup_object('temperature_sensor mcu_temp') if self._printer.objects.get('temperature_sensor mcu_temp') else None

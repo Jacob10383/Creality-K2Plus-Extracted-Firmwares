@@ -112174,7 +112174,7 @@ M73 P100 R0
 ; print_settings_id = 
 ; printable_area = 0x0,300x0,300x300,0x300
 ; printable_height = 300
-; printer_model = Creality K2 Pro 0.4 nozzle
+; printer_model = Creality K2 Pro
 ; printer_notes = 
 ; printer_settings_id = 
 ; printer_structure = undefine

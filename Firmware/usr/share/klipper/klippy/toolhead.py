@@ -128,8 +128,12 @@ class ToolHead:
         self.double_array[1]=self.__max_velocity
         self.__max_accel = config.getfloat('max_accel', above=0.)
         self.double_array[0]=self.__max_accel
-        self.requested_accel_to_decel = config.getfloat(
-            'max_accel_to_decel', self.__max_accel * 0.5, above=0.)
+        self.min_cruise_ratio = config.getfloat('min_cruise_ratio', None, minval=0., maxval=1.)
+        if self.min_cruise_ratio is not None:
+            self.requested_accel_to_decel = self.__max_accel * (1. - self.min_cruise_ratio)
+        else:
+            self.requested_accel_to_decel = config.getfloat(
+                'max_accel_to_decel', self.__max_accel * 0.5, above=0.)
         self.__max_accel_to_decel = self.requested_accel_to_decel
         self.double_array[3]=self.__max_accel_to_decel
         self.square_corner_velocity = config.getfloat(
@@ -684,6 +688,8 @@ class ToolHead:
         scv2 = self.square_corner_velocity**2
         self.__junction_deviation = scv2 * (math.sqrt(2.) - 1.) / self.__max_accel
         self.double_array[2]=self.__junction_deviation
+        if self.min_cruise_ratio is not None:
+            self.requested_accel_to_decel = self.__max_accel * (1. - self.min_cruise_ratio)
         self.__max_accel_to_decel = min(self.requested_accel_to_decel,
                                       self.__max_accel)
         self.double_array[3]=self.__max_accel_to_decel
@@ -715,6 +721,7 @@ class ToolHead:
         max_accel = gcmd.get_float('ACCEL', None, above=0.)
         square_corner_velocity = gcmd.get_float(
             'SQUARE_CORNER_VELOCITY', None, minval=0.)
+        min_cruise_ratio = gcmd.get_float('MIN_CRUISE_RATIO', None, minval=0., maxval=1.)
         requested_accel_to_decel = gcmd.get_float(
             'ACCEL_TO_DECEL', None, above=0.)
         if max_velocity is not None:
@@ -731,7 +738,12 @@ class ToolHead:
             if square_corner_velocity > self.square_corner_max_velocity:
                 square_corner_velocity = self.square_corner_max_velocity
             self.square_corner_velocity = square_corner_velocity
-        if requested_accel_to_decel is not None:
+        if min_cruise_ratio is not None:
+            self.min_cruise_ratio = min_cruise_ratio
+            self.requested_accel_to_decel = self.__max_accel * (1. - self.min_cruise_ratio)
+            # gcmd.respond_info("SET_VELOCITY_LIMIT] min_cruise_ratio={}, calculated accel_to_decel={}".format(self.min_cruise_ratio, self.requested_accel_to_decel))
+        elif requested_accel_to_decel is not None:
+            self.min_cruise_ratio = None
             if self.qmode_flag and requested_accel_to_decel > qmode_max_accel_to_decel:
                 self.requested_accel_to_decel = qmode_max_accel_to_decel
             else:
@@ -750,6 +762,7 @@ class ToolHead:
         if (max_velocity is None and
             max_accel is None and
             square_corner_velocity is None and
+            min_cruise_ratio is None and
             requested_accel_to_decel is None):
             gcmd.respond_info(msg, log=False)
     def cmd_M204(self, gcmd):

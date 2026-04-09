@@ -332,7 +332,6 @@ class ControlBangBang:
 # Proportional Integral Derivative (PID) control algo
 ######################################################################
 
-PID_SETTLE_DELTA = 2.
 PID_SETTLE_SLOPE = .5
 
 class ControlPID:
@@ -349,6 +348,7 @@ class ControlPID:
         self.Kp_ht = config.getfloat('pid_Kp_high_temp',default=config.getfloat('pid_Kp')) / PID_PARAM_BASE
         self.Ki_ht = config.getfloat('pid_Ki_high_temp',default=config.getfloat('pid_Ki')) / PID_PARAM_BASE
         self.Kd_ht = config.getfloat('pid_Kd_high_temp',default=config.getfloat('pid_Kd')) / PID_PARAM_BASE
+        self.max_delta = config.getfloat('max_delta', 2.0, above=0.)
         self.pid_calibrate_Kp = None
         self.pid_calibrate_Ki = None
         self.pid_calibrate_Kd = None
@@ -432,7 +432,7 @@ class ControlPID:
                 # 未在加热
                 self.heating = False
                 self.heater_bed_state = 0
-            elif target_temp + PID_SETTLE_DELTA < temp:
+            elif target_temp + self.max_delta < temp:
                 # 已超目标温度
                 self.heating = False
                 self.heater_bed_state = 2
@@ -448,7 +448,7 @@ class ControlPID:
             heater_bed.last_pwm_value = bounded_co
     def check_busy(self, eventtime, smoothed_temp, target_temp):
         temp_diff = target_temp - smoothed_temp
-        return (abs(temp_diff) > PID_SETTLE_DELTA
+        return (abs(temp_diff) > self.max_delta
                 or abs(self.prev_temp_deriv) > PID_SETTLE_SLOPE)
 
 
@@ -624,6 +624,14 @@ class PrinterHeaters:
                 temp = product_param.variables["chamber_temp"]
         heater.set_temp(temp)
         if wait and temp:
+            # 热床进行判断：如果当前温度高于设置温度，则跳过等待
+            if "heater_bed" in heater.name:
+                reactor = self.printer.get_reactor()
+                eventtime = reactor.monotonic()
+                current_temp, target_temp = heater.get_temp(eventtime)
+                if current_temp >= temp:
+                    # 当前温度已经达到或超过目标温度，跳过等待
+                    return
             self._wait_for_temperature(heater)
     cmd_TEMPERATURE_WAIT_help = "Wait for a temperature on a sensor"
     def cmd_TEMPERATURE_WAIT(self, gcmd):

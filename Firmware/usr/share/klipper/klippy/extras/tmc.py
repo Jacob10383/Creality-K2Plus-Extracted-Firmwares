@@ -239,6 +239,9 @@ class TMCCommandHelper:
         gcode.register_mux_command("SET_TMC_FIELD", "STEPPER", self.name,
                                    self.cmd_SET_TMC_FIELD,
                                    desc=self.cmd_SET_TMC_FIELD_help)
+        gcode.register_mux_command("GET_TMC_FIELD", "STEPPER", self.name,
+                                   self.cmd_GET_TMC_FIELD,
+                                   desc=self.cmd_GET_TMC_FIELD_help)
         gcode.register_mux_command("INIT_TMC", "STEPPER", self.name,
                                    self.cmd_INIT_TMC,
                                    desc=self.cmd_INIT_TMC_help)
@@ -314,6 +317,16 @@ class TMCCommandHelper:
         reg_val = self.fields.set_field(field_name, value)
         print_time = self.printer.lookup_object('toolhead').get_last_move_time()
         self.mcu_tmc.set_register(reg_name, reg_val, print_time)
+    cmd_GET_TMC_FIELD_help = "Get a register field of a TMC driver"
+    def cmd_GET_TMC_FIELD(self, gcmd):
+        field_name = gcmd.get('FIELD').lower()
+        reg_name = self.fields.lookup_register(field_name, None)
+        if reg_name is None:
+            raise gcmd.error("Unknown field name '%s'" % (field_name,))
+        reg_val = self.fields.registers.get(reg_name, 0)
+        reg_fields = self.fields.get_reg_fields(reg_name, reg_val)
+        value = reg_fields.get(field_name, 0)
+        gcmd.respond_info("Field %s: %d" % (field_name, value))
     cmd_SET_TMC_CURRENT_help = "Set the current of a TMC driver"
     def cmd_SET_TMC_CURRENT(self, gcmd):
         ch = self.current_helper
@@ -608,6 +621,10 @@ def TMCStealthchopHelper(config, mcu_tmc, tmc_freq):
         en_pwm_mode = True
     reg = fields.lookup_register("en_pwm_mode", None)
     if reg is not None:
+        name_parts = config.get_name().split()
+        if name_parts[0] == "tmc2262":
+            # TMC2262 individual configuration
+            return
         fields.set_field("en_pwm_mode", en_pwm_mode)
     else:
         # TMC2208 uses en_spreadCycle

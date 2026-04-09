@@ -184,6 +184,9 @@ FieldFormatters.update({
 
 class TMC2208:
     def __init__(self, config):
+        self.config = config
+        self.printer = config.get_printer()
+        self.gcode = self.printer.lookup_object("gcode")
         # Setup mcu communication
         self.fields = tmc.FieldHelper(Fields, SignedFields, FieldFormatters)
         self.mcu_tmc = tmc_uart.MCU_TMC_uart(config, Registers, self.fields)
@@ -197,6 +200,7 @@ class TMC2208:
         # Setup basic register values
         self.fields.set_field("mstep_reg_select", True)
         self.fields.set_field("multistep_filt", True)
+        self.mcu_freq = TMC_FREQUENCY
         tmc.TMCStealthchopHelper(config, self.mcu_tmc, TMC_FREQUENCY)
         # Allow other registers to be set from the config
         set_config_field = self.fields.set_config_field
@@ -213,11 +217,34 @@ class TMC2208:
         set_config_field(config, "pwm_autograd", True)
         set_config_field(config, "pwm_reg", 8)
         set_config_field(config, "pwm_lim", 12)
+        self.gcode.register_command('TMC2208_STEALTHCHOP', self.cmd_TMC2208_STEALTHCHOP)
     def read_translate(self, reg_name, val):
         if reg_name == "IOIN":
             drv_type = self.fields.get_field("sel_a", val)
             reg_name = "IOIN@TMC220x" if drv_type else "IOIN@TMC222x"
         return reg_name, val
 
+    def cmd_TMC2208_STEALTHCHOP(self, gcmd):
+        velocity = gcmd.get_float('VAL', 0.)
+        stepper = gcmd.get('STEPPER', 0.)
+        threshold = TMCStealthchopCal(self.config, self.mcu_tmc, self.mcu_freq, velocity)
+        en_spreadcycle = 0 if threshold > 0 else 1
+        self.gcode.run_script_from_command('SET_TMC_FIELD STEPPER=%s FIELD=en_spreadcycle VALUE=%d' % (stepper, en_spreadcycle))
+        self.gcode.run_script_from_command('SET_TMC_FIELD STEPPER=%s FIELD=tpwmthrs VALUE=%d' % (stepper, threshold))
+        self.gcode.run_script_from_command('GET_TMC_FIELD STEPPER=%s FIELD=tpwmthrs' % (stepper))
+
 def load_config_prefix(config):
     return TMC2208(config)
+
+def TMCStealthchopCal(config, mcu_tmc, tmc_freq, velocity):
+    fields = mcu_tmc.get_fields()
+    threshold = 0
+    if velocity:
+        stepper_name = " ".join(config.get_name().split()[1:])
+        sconfig = config.getsection(stepper_name)
+        import stepper
+        rotation_dist, steps_per_rotation = stepper.parse_step_distance(sconfig)
+        step_dist = rotation_dist / steps_per_rotation
+        step_dist_256 = step_dist / (1 << fields.get_field("mres"))
+        threshold = int(tmc_freq * step_dist_256 / velocity + .5)
+    return max(0, min(0xfffff, threshold))

@@ -201,6 +201,12 @@ class PrinterExtruder:
         user_nozzle_diameter = config.getfloat('user_nozzle_diameter', default=0.)
         if user_nozzle_diameter >= 0.1:
             self.__nozzle_diameter = user_nozzle_diameter
+
+        self.filament_diameter_raw = config.getfloat('filament_diameter', None, above=0.)
+        self.max_extrude_cross_section_raw = config.getfloat('max_extrude_cross_section', None, above=0.)
+        self.max_extrude_only_velocity_raw = config.getfloat('max_extrude_only_velocity', None, above=0.)
+        self.max_extrude_only_accel_raw = config.getfloat('max_extrude_only_accel', None, above=0.)
+
         filament_diameter = config.getfloat(
             'filament_diameter', minval=self.__nozzle_diameter)
         self.filament_area = math.pi * (filament_diameter * .5)**2
@@ -356,10 +362,27 @@ class PrinterExtruder:
     def cmd_SET_NOZZLE_DIAMETER(self, gcmd):
         value = gcmd.get_float('VALUE', 0.4)
         self.__nozzle_diameter = value
+        filament_diameter = max(self.__nozzle_diameter, self.filament_diameter_raw)
+        self.filament_area = math.pi * (filament_diameter / 2.)**2
+        max_cross_section = 4. * self.__nozzle_diameter**2
+        max_extrude_ratio = max_cross_section / self.filament_area
+        if self.max_extrude_cross_section_raw:
+            max_cross_section = self.max_extrude_cross_section_raw  
+        self.max_extrude_ratio = max_cross_section / self.filament_area
+        logging.info("[hupan_extrude] Extruder max_extrude_ratio = %.6f", self.max_extrude_ratio)
+        toolhead = self.printer.lookup_object('toolhead')
+        max_velocity, max_accel = toolhead.get_max_velocity()
+        if self.max_extrude_only_velocity_raw is None:
+            self.__max_e_velocity = max_velocity * max_extrude_ratio
+        if self.max_extrude_only_accel_raw is None:
+            self.__max_e_accel = max_accel * max_extrude_ratio
+
         configfile = self.printer.lookup_object('configfile')
         configfile.set('extruder', 'user_nozzle_diameter', '%.3f' % (self.__nozzle_diameter))
         gcode = self.printer.lookup_object('gcode')
         gcode.run_script_from_command('CXSAVE_CONFIG')
+        gcmd.respond_info("SET_NOZZLE_DIAMETER: %.3f" % (value))
+
     cmd_ACTIVATE_EXTRUDER_help = "Change the active extruder"
     def cmd_ACTIVATE_EXTRUDER(self, gcmd):
         toolhead = self.printer.lookup_object('toolhead')

@@ -274,6 +274,7 @@ class ResonanceTester:
     def cmd_SHAPER_CALIBRATE(self, gcmd):
         # Parse parameters
         axis = gcmd.get("AXIS", None)
+        gcode = self.printer.lookup_object('gcode')
         copy_TestAxis_y_to_x = False
         if not axis:
             calibrate_axes = [TestAxis('x'), TestAxis('y')]
@@ -290,6 +291,8 @@ class ResonanceTester:
         name_suffix = gcmd.get("NAME", time.strftime("%Y%m%d_%H%M%S"))
         if not self.is_valid_name_suffix(name_suffix):
             raise gcmd.error("Invalid NAME parameter")
+
+        input_shaper = self.printer.lookup_object("input_shaper", None)
 
         # Setup shaper calibration
         helper = shaper_calibrate.ShaperCalibrate(self.printer)
@@ -309,6 +312,9 @@ class ResonanceTester:
                     "Recommended shaper_type_%s = %s, shaper_freq_%s = %.1f Hz"
                     % (axis_name, best_shaper.name,
                        axis_name, best_shaper.freq))
+            if input_shaper is not None:
+                helper.apply_params(input_shaper, axis_name,
+                                    best_shaper.name, best_shaper.freq)
             helper.save_params(configfile, axis_name,
                                best_shaper.name, best_shaper.freq)
             csv_name = self.save_calibration_data(
@@ -316,18 +322,19 @@ class ResonanceTester:
                     calibration_data[axis], all_shapers)
             if copy_TestAxis_y_to_x:
                 helper.save_params(configfile, "x", best_shaper.name, best_shaper.freq)
+                if input_shaper is not None:
+                    helper.apply_params(input_shaper, "x", best_shaper.name, best_shaper.freq)
                 csv_name_x = self.save_calibration_data('calibration_data', name_suffix, helper, TestAxis('x'), calibration_data[axis], all_shapers)
                 gcmd.respond_info("copy_TestAxis_y_to_x Recommended shaper_type_%s = %s, shaper_freq_%s = %.1f Hz" % ("x", best_shaper.name, "x", best_shaper.freq))
                 gcmd.respond_info("copy_TestAxis_y_to_x Shaper calibration data written to %s file" % (csv_name_x,))
             gcmd.respond_info(
                     "Shaper calibration data written to %s file" % (csv_name,))
-        gcode = self.printer.lookup_object('gcode')
         gcode.run_script_from_command("CXSAVE_CONFIG")
         call("sync", shell=True)
         input_shaper = self.printer.lookup_object("input_shaper", None)
         if not input_shaper:
-            config = configfile.read_main_config()
-            self.printer.reload_object(config, "input_shaper")
+            #config = configfile.read_main_config()
+            #self.printer.reload_object(config, "input_shaper")
             gcode.run_script_from_command("UPDATE_INPUT_SHAPER")
             input_shaper = self.printer.lookup_object("input_shaper", None)
             input_shaper.enable_shaping()
