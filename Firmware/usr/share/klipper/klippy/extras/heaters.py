@@ -603,6 +603,7 @@ class PrinterHeaters:
                 break
             print_time = toolhead.get_last_move_time()
             gcode.respond_raw(self._get_temp(eventtime))
+            gcode.check_cancel_running()
             eventtime = reactor.pause(eventtime + 1.)
         if self.can_break_flag != 2:
             self.can_break_flag = 3
@@ -658,6 +659,7 @@ class PrinterHeaters:
                 return
             print_time = toolhead.get_last_move_time()
             gcmd.respond_raw(self._get_temp(eventtime))
+            gcmd.check_cancel_running()
             eventtime = reactor.pause(eventtime + 1.)
 
 def load_config(config):

@@ -4,7 +4,7 @@ Depends: libc, librt, libpthread
 Source: /data2/112052/code/SDK/jenkins_test/kl_C4408_V2/openwrt/package/creality/scripts
 SourceName: scripts
 Section: creality
-SourceDateEpoch: 1768873569
+SourceDateEpoch: 1776751076
 Architecture: arm_cortex-a7_neon
-Installed-Size: 2613591
+Installed-Size: 2612012
 Description:  with scripts support

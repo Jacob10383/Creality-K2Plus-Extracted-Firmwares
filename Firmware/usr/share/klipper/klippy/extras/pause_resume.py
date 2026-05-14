@@ -41,13 +41,17 @@ class PauseResume:
                                    self._handle_resume_request)
         webhooks.register_endpoint("getBootLoaderVersion",
                                    self._getBootLoaderVersion)
+        webhooks.register_endpoint("fast/response",
+                                   self._handle_fast_response)                           
+        webhooks.register_endpoint("fast/stop",
+                                   self._handle_fast_stop)    
         self._setBootLoaderStateCmdOid = None
         self.pause_start = False
         self.motor_cancel_print_start = False
         self.resume_err = False
     def handle_connect(self):
         self.v_sd = self.printer.lookup_object('virtual_sdcard', None)
-        
+
     def _getBootLoaderVersion(self, web_request):
         mcu = self.printer.lookup_object('mcu')
         result = mcu.get_constants().get('software_version', '')
@@ -136,11 +140,17 @@ class PauseResume:
         if print_stats:
             print_stats.power_loss = 0
     def _handle_cancel_request(self, web_request):
+        self.gcode.invoke_action()
+        self.gcode.fast_stop_complete()
         self.gcode.run_script("CANCEL_PRINT")
     def _handle_pause_request(self, web_request):
         self.gcode.run_script("PAUSE")
     def _handle_resume_request(self, web_request):
         self.gcode.run_script("RESUME")
+    def _handle_fast_stop(self, web_request):
+        self.gcode.fast_stop_complete()
+    def _handle_fast_response(self, web_request):
+        self.gcode.invoke_action()
     def get_status(self, eventtime):
         return {
             'is_paused': self.is_paused,

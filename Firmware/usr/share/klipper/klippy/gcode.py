@@ -18,6 +18,9 @@ class CommandWarning(Warning):
 class CommandError(Exception):
     pass
 
+class CancelError(Exception):
+    pass
+
 class ModuleCommandError(CommandError):
     
     def __init__(self, message: str, command: typing.Optional[str] = None, **kwargs):
@@ -58,6 +61,7 @@ class GCodeCommand:
         # Method wrappers
         self.respond_info = gcode.respond_info
         self.respond_raw = gcode.respond_raw
+        self.check_cancel_running = gcode.check_cancel_running
     def get_command(self):
         return self._command
     def get_commandline(self):
@@ -127,6 +131,7 @@ class GCodeCommand:
 # Parse and dispatch G-Code commands
 class GCodeDispatch:
     error = CommandError
+    cancel_error = CancelError
     warning = CommandWarning.warn
     Coord = Coord
     def __init__(self, printer):
@@ -138,6 +143,7 @@ class GCodeDispatch:
                                        self._handle_disconnect)
         # Command handling
         self.is_printer_ready = False
+        self.cancel_pending = False
         self.mutex = printer.get_reactor().mutex()
         self.output_callbacks = []
         self.base_gcode_handlers = self.gcode_handlers = {}
@@ -228,9 +234,11 @@ class GCodeDispatch:
                 return param[:i], param[i:]
         return param, ''
     args_r = re.compile('([A-Z_]+|[A-Z*/])')
-    def _process_commands(self, commands, need_ack=True):
+    def _process_commands(self, commands, need_ack=True, check_cancel=False):
         for line in commands:
-            
+            # 只在 run_script 调用时检查取消请求，避免中断 CMD 指令内部的 run_script_from_command
+            if check_cancel and self.cancel_pending:
+                return
             if not line:
                 continue
 
@@ -258,6 +266,9 @@ class GCodeDispatch:
                     except CommandWarning as e:
                         logging.warning("CommandWarning as e")
                         self._respond_warning(str(e))
+                    except CancelError as e:
+                        logging.warning("should be canceled")
+                        return 
                     except:
                         msg = """{"code":"key60", "msg":"Internal error on command:%s", "values": ["%s"]}""" % (line.strip("\n"), line.strip("\n"))
                         logging.exception(msg)
@@ -324,6 +335,9 @@ class GCodeDispatch:
                     except CommandWarning as e:
                         logging.warning("CommandWarning as e")
                         self._respond_warning(str(e))
+                    except CancelError as e:
+                        logging.warning("should be canceled")
+                        return 
                     except:
                         msg = """{"code":"key60", "msg":"Internal error on command:%s", "values": ["%s"]}""" % (cmd, cmd)
                         logging.exception(msg)
@@ -407,7 +421,25 @@ class GCodeDispatch:
         self._process_commands(script.split('\n'), need_ack=False)
     def run_script(self, script):
         with self.mutex:
-            self._process_commands(script.split('\n'), need_ack=False)
+            # 传入 check_cancel=True，允许中断执行
+            self._process_commands(script.split('\n'), need_ack=False, check_cancel=True)
+    def check_cancel_running(self):
+        if not self.is_printer_ready:
+            raise self.cancel_error("Command failed due to shutdown")
+        if self.cancel_pending:
+            raise self.cancel_error("Command failed due to gcode cancel request")
+    def invoke_action(self, event_name=None):
+        # event_name: "gcode:cancel"
+        if self.cancel_pending or not self.is_printer_ready:
+            return
+        self.cancel_pending = True
+        # 触发事件回调,中断后触发的事件
+        if event_name is not None:
+            self.printer.send_event(event_name)
+    def fast_stop_complete(self):
+        with self.mutex:
+            self.cancel_pending = False
+            self.run_script_from_command("SAVE_ENDPRINT")
     def get_mutex(self):
         return self.mutex
     def create_gcode_command(self, command, commandline, params):
@@ -481,6 +513,8 @@ class GCodeDispatch:
         if not self.is_printer_ready:
             raise gcmd.error(self.printer.get_state_message()[0])
             return
+        if self.cancel_pending and cmd in self.ready_gcode_handlers:
+            return 
         if not cmd:
             cmdline = gcmd.get_commandline()
             if cmdline:

@@ -78,7 +78,8 @@ class CoreXYKinematics:
     def restore_limits(self):
         for i, rail in enumerate(self.rails):
             if i==0 or i==1:
-                self.limits[i] = rail.get_range()
+                if self.limits[i][1] > self.limits[i][0]:
+                    self.limits[i] = rail.get_range()
         mymovie.Py_set_corexykin_info(self.limits[0][0], self.limits[0][1],
                                        self.limits[1][0], self.limits[1][1],
                                        self.limits[2][0], self.limits[2][1],

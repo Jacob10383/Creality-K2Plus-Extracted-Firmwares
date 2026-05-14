@@ -92,31 +92,34 @@ class VibrationPulseTest:
         else:
             input_shaper = None
         gcmd.respond_info("Testing frequency %.0f Hz" % (freq,))
-        while freq <= self.freq_end + 0.000001:
-            t_seg = .25 / freq
-            accel = self.accel_per_hz * freq
-            max_v = accel * t_seg
-            toolhead.cmd_M204(self.gcode.create_gcode_command(
-                "M204", "M204", {"S": accel}))
-            L = .5 * accel * t_seg**2
-            dX, dY = axis.get_point(L)
-            nX = X + sign * dX
-            nY = Y + sign * dY
-            toolhead.move([nX, nY, Z, E], max_v)
-            toolhead.move([X, Y, Z, E], max_v)
-            sign = -sign
-            old_freq = freq
-            freq += 2. * t_seg * self.hz_per_sec
-            if math.floor(freq) > math.floor(old_freq):
-                gcmd.respond_info("Testing frequency %.0f Hz" % (freq,))
-        # Restore the original acceleration values
-        self.gcode.run_script_from_command(
-                "SET_VELOCITY_LIMIT ACCEL=%.3f ACCEL_TO_DECEL=%.3f" % (
-                    old_max_accel, old_max_accel_to_decel))
-        # Restore input shaper if it was disabled for resonance testing
-        if input_shaper is not None:
-            input_shaper.enable_shaping()
-            gcmd.respond_info("Re-enabled [input_shaper]")
+        try:
+            while freq <= self.freq_end + 0.000001:
+                self.gcode.check_cancel_running() 
+                t_seg = .25 / freq
+                accel = self.accel_per_hz * freq
+                max_v = accel * t_seg
+                toolhead.cmd_M204(self.gcode.create_gcode_command(
+                    "M204", "M204", {"S": accel}))
+                L = .5 * accel * t_seg**2
+                dX, dY = axis.get_point(L)
+                nX = X + sign * dX
+                nY = Y + sign * dY
+                toolhead.move([nX, nY, Z, E], max_v)
+                toolhead.move([X, Y, Z, E], max_v)
+                sign = -sign
+                old_freq = freq
+                freq += 2. * t_seg * self.hz_per_sec
+                if math.floor(freq) > math.floor(old_freq):
+                    gcmd.respond_info("Testing frequency %.0f Hz" % (freq,))
+        finally:
+            # Restore the original acceleration values
+            self.gcode.run_script_from_command(
+                    "SET_VELOCITY_LIMIT ACCEL=%.3f ACCEL_TO_DECEL=%.3f" % (
+                        old_max_accel, old_max_accel_to_decel))
+            # Restore input shaper if it was disabled for resonance testing
+            if input_shaper is not None:
+                input_shaper.enable_shaping()
+                gcmd.respond_info("Re-enabled [input_shaper]")
 
 class ResonanceTester:
     def __init__(self, config):
@@ -185,18 +188,20 @@ class ResonanceTester:
                         raw_values.append((axis, aclient, chip.name))
 
                 # Generate moves
-                self.test.run_test(axis, gcmd)
-                for chip_axis, aclient, chip_name in raw_values:
-                    aclient.finish_measurements()
-                    if raw_name_suffix is not None:
-                        raw_name = self.get_filename(
-                                'raw_data', raw_name_suffix, axis,
-                                point if len(test_points) > 1 else None,
-                                chip_name if accel_chips is not None else None,)
-                        aclient.write_to_file(raw_name)
-                        gcmd.respond_info(
-                                "Writing raw accelerometer data to "
-                                "%s file" % (raw_name,))
+                try:
+                    self.test.run_test(axis, gcmd)
+                finally:
+                    for chip_axis, aclient, chip_name in raw_values:
+                        aclient.finish_measurements()
+                        if raw_name_suffix is not None:
+                            raw_name = self.get_filename(
+                                    'raw_data', raw_name_suffix, axis,
+                                    point if len(test_points) > 1 else None,
+                                    chip_name if accel_chips is not None else None,)
+                            aclient.write_to_file(raw_name)
+                            gcmd.respond_info(
+                                    "Writing raw accelerometer data to "
+                                    "%s file" % (raw_name,))
                 if helper is None:
                     continue
                 for chip_axis, aclient, chip_name in raw_values:

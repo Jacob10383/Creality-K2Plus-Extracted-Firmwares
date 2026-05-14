@@ -185,7 +185,9 @@ class PrinterProbe:
         probexy = self.printer.lookup_object('toolhead').get_position()[:2]
         retries = 0
         positions = []
+        gcode = self.printer.lookup_object("gcode")
         while len(positions) < sample_count:
+            gcode.check_cancel_running()
             # Probe position
             if zmax_dist is not None:
                 pos = self._probe(speed, max_z_dist=zmax_dist)
