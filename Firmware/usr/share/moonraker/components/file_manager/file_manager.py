@@ -80,6 +80,8 @@ class FileManager:
         self.fixed_path_args: Dict[str, Any] = {}
         self.queue_gcodes: bool = config.getboolean('queue_gcode_uploads',
                                                     False)
+        self.check_klipper_config_path: bool = config.getboolean(
+            'check_klipper_config_path', True)
 
         # Register file management endpoints
         self.server.register_endpoint(
@@ -167,10 +169,16 @@ class FileManager:
         # Validate config file
         cfg_file: Optional[str] = paths.get("config_file")
         cfg_parent = self.file_paths.get("config")
-        if cfg_file is not None and cfg_parent is not None:
+        if not self.check_klipper_config_path:
+            self.server.remove_warning("klipper_config")
+        elif cfg_file is not None and cfg_parent is not None:
             cfg_path = pathlib.Path(cfg_file).resolve()
             par_path = pathlib.Path(cfg_parent).resolve()
-            if par_path not in cfg_path.parents:
+            try:
+                ok_cfg = cfg_path.parent.samefile(par_path)
+            except (OSError, ValueError):
+                ok_cfg = par_path in cfg_path.parents
+            if not ok_cfg:
                 self.server.add_warning(
                     "file_manager: Klipper configuration file not located in "
                     "'config' folder.\n\n"
@@ -180,6 +188,8 @@ class FileManager:
                 )
             else:
                 self.server.remove_warning("klipper_config")
+        else:
+            self.server.remove_warning("klipper_config")
 
     def validate_gcode_path(self, gc_path: str) -> None:
         gc_dir = pathlib.Path(gc_path).expanduser()

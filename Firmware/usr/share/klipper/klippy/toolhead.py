@@ -277,7 +277,9 @@ class ToolHead:
         # Queue moves into trapezoid motion queue (trapq)
         next_move_time = self.print_time
         # start=time.time()
-        return_value=self.trapq_append_from_moveq(self.trapq,self.extruder.trapq,next_move_time,mymovie.Py_get_moveq_only_data_buffer(),len(moves))
+        return_value = self.trapq_append_from_moveq(
+            self.trapq, self.extruder.trapq, next_move_time,
+            mymovie.Py_get_moveq_only_data_buffer(), len(moves))
         if return_value.extru_last_position < 109999999:
             self.extruder.last_position=return_value.extru_last_position
         # for move in moves:
@@ -298,7 +300,16 @@ class ToolHead:
             #     cb(next_move_time)
         # time.sleep(0.100)
         # print(f"trapq_append:{time.time()-start}")
-        # Generate steps for moves
+        has_cb = any(move[1] for move in moves)
+        if has_cb:
+            for move in moves:
+                _move = move[0]
+                _move_cb = move[1]
+                next_move_time += _move.accel_t + _move.cruise_t + _move.decel_t
+                if _move_cb:
+                    for cb in _move_cb:
+                        cb(next_move_time)
+        
         if self.special_queuing_state:
             self._update_drip_move_time(return_value.next_move_time)
         self._update_move_time(return_value.next_move_time)

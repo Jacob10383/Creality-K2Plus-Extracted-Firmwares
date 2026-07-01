@@ -46,6 +46,11 @@ swupdate_cmd()
             return
         }
 
+        if [ ! -f /tmp/is_initramfs ]; then
+            old_version=$(fw_printenv -n version 2>/dev/null)
+            fw_setenv old_version $old_version
+        fi
+
         echo "###now do swupdate###"
         echo "###log in $swupdate_log_file###"
 
@@ -67,13 +72,24 @@ swupdate_cmd()
         echo "swu_next: ##$swu_next##"
         if [ x"$swu_next" = "xreboot" ]; then
             fw_setenv swu_next
-            # reboot by this script when running at recovery initramfs
-            if [ -f /tmp/is_initramfs ]; then
-                reboot -f
+
+            swu_next_system=$(fw_printenv -n boot_partition 2>/dev/null)
+            echo "swu_next_system = $swu_next_system"
+
+            if [ "x$swu_next_system" = "xrecovery" ]; then
+	            echo "ota update recovery ok"
+	            reboot -f
             else
-                # keep this string for upgrade-server to detect result
-                echo "ota update ok"
-                break
+	            # reboot by this script when running at recovery initramfs
+	            if [ -f /tmp/is_initramfs ]; then
+	                echo "ota update system ok"
+	                #reboot -f
+	                break
+	            else
+	                # keep this string for upgrade-server to detect result
+	                echo "ota update ok"
+	                break
+	            fi
             fi
         fi
 
@@ -93,7 +109,12 @@ mkdir -p /var/lock
 
 [ $# -ne 0 ] && {
     echo "config new swupdate"
-    rm -f $swupdate_log_file
+
+    current_boot_partition=$(fw_printenv -n boot_partition 2>/dev/null)
+    if [ "x$current_boot_partition" != "xrecovery" ]; then
+        rm -f $swupdate_log_file
+    fi
+
     swu_input=$*
     echo "swu_input: ##$swu_input##"
 

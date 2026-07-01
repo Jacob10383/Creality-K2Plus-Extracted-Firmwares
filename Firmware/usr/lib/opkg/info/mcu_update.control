@@ -1,10 +1,10 @@
 Package: mcu_update
-Version: ae2ae3b
+Version: d1197bf
 Depends: libc, librt, libpthread, libcrlog
 Source: /data2/112052/code/SDK/jenkins_test/kl_C4408_V2/openwrt/package/creality/mcu_update
 SourceName: mcu_update
 Section: creality
 SourceDateEpoch: 1776844242
 Architecture: arm_cortex-a7_neon
-Installed-Size: 23114
+Installed-Size: 23610
 Description:  mcu_update

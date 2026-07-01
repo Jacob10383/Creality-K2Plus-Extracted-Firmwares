@@ -6,8 +6,8 @@ SourceName: opencv
 License: Apache-2.0
 LicenseFiles: LICENSE
 Section: libs
-SourceDateEpoch: 1715336319
+SourceDateEpoch: 1779262525
 Maintainer: WRTnode Team <pub@wrtnode.com>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 6518778
+Installed-Size: 6518864
 Description:  OpenCV

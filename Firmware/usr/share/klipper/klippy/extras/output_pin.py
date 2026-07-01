@@ -117,7 +117,7 @@ class PrinterOutputPin:
 
     cmd_SET_PIN_help = "Set the value of an output pin"
     def cmd_SET_PIN(self, gcmd):
-
+        sync = gcmd.get_int('SYNC', 1, minval=0, maxval=1)
         value = gcmd.get_float('VALUE', minval=0., maxval=self.scale)
         value /= self.scale
         cycle_time = gcmd.get_float('CYCLE_TIME', self.default_cycle_time,
@@ -125,11 +125,15 @@ class PrinterOutputPin:
         if not self.is_pwm and value not in [0., 1.]:
             raise gcmd.error("Invalid pin value")
         toolhead = self.printer.lookup_object('toolhead')
-        systime = self.reactor.monotonic()
-        print_time=self.mcu_pin.get_mcu().estimated_print_time(systime)
-        self._set_pin(print_time+0.1, value, cycle_time)
-        # toolhead.register_lookahead_callback(
-        #     lambda print_time: self._set_pin(print_time, value, cycle_time))
+        if sync:
+            logging.info("SET_PIN sync=1")
+            systime = self.reactor.monotonic()
+            print_time=self.mcu_pin.get_mcu().estimated_print_time(systime)
+            self._set_pin(print_time+0.1, value, cycle_time)
+        else:
+            logging.info("SET_PIN sync=0")
+            toolhead.register_lookahead_callback(
+                lambda print_time: self._set_pin(print_time, value, cycle_time))
 
     def _resend_current_val(self, eventtime):
         if self.last_value == self.shutdown_value:
