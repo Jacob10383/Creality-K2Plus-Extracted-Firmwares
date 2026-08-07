@@ -23,3 +23,4 @@ You can find the firmware changes for each version:
 - [Changes from **1.1.4.11** to **1.1.5.2**](https://github.com/Jacob10383/Creality-K2Plus-Extracted-Firmwares/commit/4b4fdb5421309aa28d0bde7cbb7427bc428e3b48)
 - [Changes from **1.1.5.2** to **1.1.5.5**](https://github.com/Jacob10383/Creality-K2Plus-Extracted-Firmwares/commit/669ad96e0ffdd46ab2e2608386704ddb18de0b03)
 - [Changes from **1.1.5.5** to **1.1.6.1**](https://github.com/Jacob10383/Creality-K2Plus-Extracted-Firmwares/commit/c6d00c225aa3a770bd33bce1e25ac357c7cb5101)
+- [Changes from **1.1.6.1** to **1.1.6.4**](https://github.com/Jacob10383/Creality-K2Plus-Extracted-Firmwares/commit/2687b4c1e8cabf4b82fdae4d8875b036bae4e65b)
