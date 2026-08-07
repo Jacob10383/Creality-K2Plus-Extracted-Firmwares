@@ -17,7 +17,7 @@
     "system_config" :"/mnt/UDISK/creality/userdata/config/system_config.json",
     "cxsw_config" : "/mnt/UDISK/creality/userdata/cloud/user_info.json",
     "host_name":"api.crealitycloud.com",
-    "version":"V2.0.11.20260608",
+    "version":"V2.0.11.20260701",
     "is_x2600":"0",
     "dev_url":"http://172.23.88.185:8080/api/v1/",
     "idc_url":"https://devdata.cxswyjy.com/api/v1/",

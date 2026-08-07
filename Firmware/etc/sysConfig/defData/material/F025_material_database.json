@@ -124,8 +124,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -247,8 +249,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -371,8 +375,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 65,
+          "dryingTime": 8,
+          "dryingTempLow": 60,
+          "dryingTempHigh": 70
         }
       },
       {
@@ -494,8 +500,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 75,
+          "dryingTime": 8,
+          "dryingTempLow": 70,
+          "dryingTempHigh": 80
         }
       },
       {
@@ -617,8 +625,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -741,8 +751,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -865,8 +877,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 65,
+          "dryingTime": 8,
+          "dryingTempLow": 60,
+          "dryingTempHigh": 70
         }
       },
       {
@@ -988,8 +1002,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 75,
+          "dryingTime": 8,
+          "dryingTempLow": 70,
+          "dryingTempHigh": 80
         }
       },
       {
@@ -1031,7 +1047,7 @@
           "filament_cooling_initial_speed": "2.2",
           "filament_cooling_moves": "4",
           "filament_cost": "20",
-          "filament_density": "1.24",
+          "filament_density": "1.25",
           "filament_deretraction_speed": "nil",
           "filament_diameter": "1.75",
           "filament_end_gcode": "; filament end gcode \n",
@@ -1112,8 +1128,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -1155,7 +1173,7 @@
           "filament_cooling_initial_speed": "2.2",
           "filament_cooling_moves": "4",
           "filament_cost": "20",
-          "filament_density": "1.24",
+          "filament_density": "1.25",
           "filament_deretraction_speed": "nil",
           "filament_diameter": "1.75",
           "filament_end_gcode": "; filament end gcode \n",
@@ -1236,8 +1254,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       },
       {
@@ -1279,7 +1299,7 @@
           "filament_cooling_initial_speed": "2.2",
           "filament_cooling_moves": "4",
           "filament_cost": "14",
-          "filament_density": "1.24",
+          "filament_density": "1.27",
           "filament_deretraction_speed": "nil",
           "filament_diameter": "1.75",
           "filament_end_gcode": "; filament end gcode \n",
@@ -1360,8 +1380,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 65,
+          "dryingTime": 8,
+          "dryingTempLow": 60,
+          "dryingTempHigh": 70
         }
       },
       {
@@ -1403,7 +1425,7 @@
           "filament_cooling_initial_speed": "2.2",
           "filament_cooling_moves": "4",
           "filament_cost": "15",
-          "filament_density": "1.24",
+          "filament_density": "1.04",
           "filament_deretraction_speed": "nil",
           "filament_diameter": "1.75",
           "filament_end_gcode": "; filament end gcode \n",
@@ -1483,8 +1505,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 75,
+          "dryingTime": 8,
+          "dryingTempLow": 70,
+          "dryingTempHigh": 80
         }
       },
       {
@@ -1526,7 +1550,7 @@
           "filament_cooling_initial_speed": "2.2",
           "filament_cooling_moves": "4",
           "filament_cost": "30",
-          "filament_density": "1.24",
+          "filament_density": "1.1",
           "filament_deretraction_speed": "nil",
           "filament_diameter": "1.75",
           "filament_end_gcode": "; filament end gcode \n",
@@ -1606,8 +1630,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 75,
+          "dryingTime": 8,
+          "dryingTempLow": 70,
+          "dryingTempHigh": 80
         }
       },
       {
@@ -1729,8 +1755,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 70,
+          "dryingTime": 8,
+          "dryingTempLow": 65,
+          "dryingTempHigh": 75
         }
       },
       {
@@ -1852,8 +1880,10 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 75,
+          "dryingTime": 8,
+          "dryingTempLow": 70,
+          "dryingTempHigh": 80
         }
       },
       {
@@ -1976,12 +2006,14 @@
           "isSupport": false,
           "shrinkageRate": 0,
           "softeningTemp": 0,
-          "dryingTemp": 0,
-          "dryingTime": 0
+          "dryingTemp": 55,
+          "dryingTime": 8,
+          "dryingTempLow": 50,
+          "dryingTempHigh": 60
         }
       }
     ],
     "count": 16,
-    "version": "1757151847"
+    "version": "1779195461"
   }
 }

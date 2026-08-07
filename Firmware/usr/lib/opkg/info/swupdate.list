@@ -3,3 +3,4 @@
 /etc/init.d/S99swupdate_autorun
 /sbin/swupdate-progress
 /sbin/swupdate-client
+/sbin/swupdate_auto_update.sh

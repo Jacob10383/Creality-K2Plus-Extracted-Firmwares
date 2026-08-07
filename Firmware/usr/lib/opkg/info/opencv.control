@@ -9,5 +9,5 @@ Section: libs
 SourceDateEpoch: 1779262525
 Maintainer: WRTnode Team <pub@wrtnode.com>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 6518864
+Installed-Size: 6518844
 Description:  OpenCV

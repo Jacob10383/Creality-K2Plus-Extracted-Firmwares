@@ -28,6 +28,7 @@ BROADCAST_ADDR = 0xFF
 BROADCAST_ADDR_MB = 0xFE
 BROADCAST_ADDR_CLM = 0xFD
 BROADCAST_ADDR_BTM = 0xFC
+BROADCAST_ADDR_CFS_PRO = 0xFE
 # 自动地址获取相关命令
 CMD_GET_SLAVE_INFO = 0xA1
 CMD_SET_SLAVE_ADDR = 0xA0
@@ -40,10 +41,11 @@ MODE_APP = 0
 MODE_LOADER = 1
 
 # 设备类型
-# MB-料盒 CLM-闭环电机 BTM-皮带张紧电机
+# MB-料盒 CLM-闭环电机 BTM-皮带张紧电机 CFS-Pro-新型料盒
 DEV_TYPE_MB = 1
 DEV_TYPE_CLM = 2
 DEV_TYPE_BTM = 3
+DEV_TYPE_CFS_PRO = 10
 # 下标偏移量
 DEV_TYPE_INDEX_OFFSET = DEV_TYPE_MB
 
@@ -78,6 +80,7 @@ name_map = {
     DEV_TYPE_MB: "mb_addr_table_uniids",
     # DEV_TYPE_CLM: "clm_addr_table_uniids",
     # DEV_TYPE_BTM: "btm_addr_table_uniids",
+    DEV_TYPE_CFS_PRO: "cfs_pro_addr_table_uniids"
 }
 
 # 包格式
@@ -107,6 +110,7 @@ class AddrManager:
     acked: int
     lost_cnt: int
     mode: int
+    type: int =0
 
 # 料盒地址
 addr_manager_table_mb = [
@@ -116,6 +120,13 @@ addr_manager_table_mb = [
     AddrManager(0x04, [0x00], 0, 0, 0, 0, 0),
 ]
 
+# # CFS-Pro地址
+# addr_manager_table_cfs_pro = [
+#     AddrManager(0x01, [0x00], 0, 0, 0, 0, 0),
+#     AddrManager(0x02, [0x00], 0, 0, 0, 0, 0),
+#     AddrManager(0x03, [0x00], 0, 0, 0, 0, 0),
+#     AddrManager(0x04, [0x00], 0, 0, 0, 0, 0),
+# ]
 # 闭环电机地址
 addr_manager_table_cl_motor = [
     AddrManager(0x81, [0x00], 0, 0, 0, 0, 0),
@@ -141,6 +152,7 @@ dev_table_map_table = [
     DevTableMap(DEV_TYPE_MB, BROADCAST_ADDR_MB, addr_manager_table_mb),
     # DevTableMap(DEV_TYPE_CLM, BROADCAST_ADDR_CLM, addr_manager_table_cl_motor),
     # DevTableMap(DEV_TYPE_BTM, BROADCAST_ADDR_BTM, addr_manager_table_bt_motor),
+    # DevTableMap(DEV_TYPE_CFS_PRO, BROADCAST_ADDR_CFS_PRO, addr_manager_table_cfs_pro),
 ]
 
 class AutoAddrWrapper:
@@ -301,10 +313,16 @@ class AutoAddrWrapper:
         return self.crc8_cal(crc_buff, len(crc_buff))
 
     def is_dev_type_valid(self, dev_type):
-        if dev_type == DEV_TYPE_BTM or dev_type == DEV_TYPE_CLM or dev_type == DEV_TYPE_MB:
-            return 1
-        else:
-            return 0
+        return dev_type in (DEV_TYPE_MB, DEV_TYPE_CLM, DEV_TYPE_BTM, DEV_TYPE_CFS_PRO)
+
+    # def box_pro_find_
+    def find_cfs_dev_table_index(self, dev_type):
+        dev_table_index = 0
+        for i in range(len(dev_table_map_table)):
+            if dev_type == dev_table_map_table[i].dev_type:
+                dev_table_index = i
+                break
+        return dev_table_index
 
     def function_code_cb(self, package):
         function_code = package.function_code
@@ -313,12 +331,19 @@ class AutoAddrWrapper:
         if function_code == CMD_SET_SLAVE_ADDR or function_code == CMD_GET_SLAVE_INFO \
             or function_code == CMD_ONLINE_CHECK or function_code == CMD_GET_ADDR_TABLE:
             ack_data = FcAckData(package.data[0], package.data[1], package.data[2:])
-        
+        # 通过dev_type找对应的addr_manager_table
+        dev_table_index = 0
+        for i in range(len(dev_table_map_table)):
+            if ack_data.dev_type == DEV_TYPE_CFS_PRO:# cfs-pro 和 mb共用一个地址表，dev_type是区分设备的，所以如果是cfs-pro设备，直接找mb的地址表即可
+                dev_table_index = self.find_cfs_dev_table_index(DEV_TYPE_MB)
+            elif ack_data.dev_type == dev_table_map_table[i].dev_type:
+                dev_table_index = i
+            break
         ## 记录是否在loader的标记
         if ack_data is not None:
-            addr_manager_table = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].addr_manager_table
+            addr_manager_table = dev_table_map_table[dev_table_index].addr_manager_table
             uniid = ack_data.uniid
-            size = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].size
+            size = dev_table_map_table[dev_table_index].size
             for i in range(size):
                 if addr_manager_table[i].uniid == uniid:
                     addr_manager_table[i].mode = ack_data.mode 
@@ -331,8 +356,8 @@ class AutoAddrWrapper:
             if self.is_dev_type_valid(ack_data.dev_type):
                 # self.dprintf("uniid:")
                 # self.print_buff(ack_data.uniid)
-                addr_manager_table = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].addr_manager_table
-                size = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].size
+                addr_manager_table = dev_table_map_table[dev_table_index].addr_manager_table
+                size = dev_table_map_table[dev_table_index].size
                 addr = package.slave_addr
                 uniid = ack_data.uniid
                 self.dprintf("received addr %d uniid %s" % (addr, uniid))
@@ -346,6 +371,8 @@ class AutoAddrWrapper:
                         addr_manager_table[i].acked = 1
                         addr_manager_table[i].online = ONLINE_STATE_ONLINE
                         addr_manager_table[i].lost_cnt = 0
+                        addr_manager_table[i].type = ack_data.dev_type
+
                         self.dprintf("addr %d acked" % addr_manager_table[i].addr)
                         break
         elif function_code == CMD_GET_SLAVE_INFO:
@@ -355,8 +382,8 @@ class AutoAddrWrapper:
                 self.dprintf("mode: %d" % ack_data.mode)
                 self.dprintf("uniid:")
                 self.print_buff(ack_data.uniid)
-                addr_manager_table = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].addr_manager_table
-                size = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].size
+                addr_manager_table = dev_table_map_table[dev_table_index].addr_manager_table
+                size = dev_table_map_table[dev_table_index].size
                 addr = self.addr_allocate(ack_data.uniid, addr_manager_table)
                 self.dprintf("addr: %d" % addr)
 
@@ -365,8 +392,8 @@ class AutoAddrWrapper:
             if self.is_dev_type_valid(ack_data.dev_type):
                 self.dprintf("uniid:")
                 self.print_buff(ack_data.uniid)
-                addr_manager_table = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].addr_manager_table
-                size = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].size
+                addr_manager_table = dev_table_map_table[dev_table_index].addr_manager_table
+                size = dev_table_map_table[dev_table_index].size
                 addr = package.slave_addr
                 uniid = ack_data.uniid
                 for i in range(size):
@@ -375,6 +402,7 @@ class AutoAddrWrapper:
                         addr_manager_table[i].acked = 1
                         addr_manager_table[i].online = ONLINE_STATE_ONLINE
                         addr_manager_table[i].lost_cnt = 0
+                        addr_manager_table[i].type = ack_data.dev_type
                         self.dprintf("addr %d acked" % addr_manager_table[i].addr)
                         break
 
@@ -383,17 +411,23 @@ class AutoAddrWrapper:
             if self.is_dev_type_valid(ack_data.dev_type):
                 self.dprintf("uniid:")
                 self.print_buff(ack_data.uniid)
-                addr_manager_table = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].addr_manager_table
-                size = dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET].size
+                addr_manager_table = dev_table_map_table[dev_table_index].addr_manager_table
+                size = dev_table_map_table[dev_table_index].size
                 addr = package.slave_addr
                 uniid = ack_data.uniid
                 for i in range(size):
                     if addr_manager_table[i].addr == addr:
+                        for j in range(size):
+                            if j != i and addr_manager_table[j].uniid == uniid:
+                                self.dprintf(f"find the same uniid but different addr, ignore the new addr and keep the old one, old addr {addr_manager_table[j].addr}, new addr {addr}")
+                                return
                         addr_manager_table[i].uniid = uniid
                         addr_manager_table[i].mapped = 1
                         addr_manager_table[i].acked = 1
                         addr_manager_table[i].online = ONLINE_STATE_ONLINE 
                         addr_manager_table[i].lost_cnt = 0
+                        addr_manager_table[i].type = ack_data.dev_type
+
                         self.uniid_changed = True 
                         self.dprintf("addr %d acked" % addr_manager_table[i].addr)
                         break
@@ -402,7 +436,7 @@ class AutoAddrWrapper:
 
         if self.uniid_changed:
             self.uniid_changed = False
-            self.save_addr_table_uniids(dev_table_map_table[ack_data.dev_type - DEV_TYPE_INDEX_OFFSET])
+            self.save_addr_table_uniids(dev_table_map_table[dev_table_index])
 
     def dprintf(self, msg):
         if self.debug:
@@ -674,7 +708,11 @@ class AutoAddrWrapper:
             for i in range(len(dev_table_map_table)):
                 dev_table_map = dev_table_map_table[i]
                 self.get_slave_info(dev_table_map)
-                self.set_slave_addr(dev_table_map)
+                #兼容不同类型的设备，但广播地址相同
+                for j in range(len(dev_table_map_table)):
+                    dev_table_map = dev_table_map_table[j]
+                    # logging.info(f'j: {i}, dev_type: {dev_table_map.dev_type}')
+                    self.set_slave_addr(dev_table_map)
 
             self.dprintf("online check")
             for i in range(len(dev_table_map_table)):

@@ -2,11 +2,15 @@
   "CFSs":[
     {
       "boot_ver":"cfs0_050_G30",
-      "app_ver":"cfs0_000_142"
+      "app_ver":"cfs0_000_150"
     },
     {
       "boot_ver":"cfs0_050_G32",
-      "app_ver":"cfs0_000_142"
+      "app_ver":"cfs0_000_152"
+    },
+    {
+      "boot_ver":"cfs6_100_G31",
+      "app_ver":"cfs6_221_000"
     }
   ]
 }
