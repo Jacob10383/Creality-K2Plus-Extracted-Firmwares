@@ -8,6 +8,8 @@ from .base_info import base_dir, system_info_instance
 
 VALID_GCODE_EXTS = ['gcode', 'g', 'gco']
 LAYER_KEYS = ["; layer #", ";LAYER:", "; layer:", "; LAYER:", ";AFTER_LAYER_CHANGE", ";LAYER_CHANGE"]
+KLIPPER_CAPTURE_COUNT = 1
+KLIPPER_CAPTURE_END = 0
 
 MAINTENANCE_ITEM = {
     "calibrate" : {
@@ -107,6 +109,9 @@ class VirtualSD:
         self.gcode.register_command(
             "SHOW_GCODE_FLUSH", self.cmd_SHOW_GCODE_FLUSH,
             desc=self.cmd_SHOW_GCODE_FLUSH_help)
+        self.gcode.register_command(
+            "M5001", self.cmd_CAPTURE_DELAY_IMAGE,
+            desc=self.cmd_CAPTURE_DELAY_IMAGE_help)
         self.gcode.register_command("CLEAR_EEPROM_INFO", self.cmd_CLEAR_EEPROM_INFO)
         self.gcode.register_command("SET_MAINTENANCE_ITEM_VARIABLE", self.cmd_SET_MAINTENANCE_ITEM_VARIABLE)
         self.count_G1 = 0 
@@ -115,6 +120,7 @@ class VirtualSD:
         self.eepromWriteCount = 1
         self.fan_state = {}
         self.gcode_layer_path = os.path.join(base_dir, "creality/userdata/config/gcode_layer.json")
+        self.klipper_capture_cnt_path = os.path.join(base_dir, "creality/userdata/config/klipper_capture_cnt.json")
         self.user_print_refer_path = os.path.join(base_dir, "creality/userdata/config/user_print_refer.json")
         self.print_file_name_path = os.path.join(base_dir, "creality/userdata/config/print_file_name.json")
         self.speed_mode_path = os.path.join(base_dir, "creality/userdata/config/speed_mode.json")
@@ -146,6 +152,8 @@ class VirtualSD:
         self.lock = threading.Lock()
         self.is_move_out_of_range_in_printing = False
         self.ignore_M = False
+        self.klipper_capture = False
+        self.klipper_capture_cnt = 0
     def _handle_ready(self):
         self._maintenance_item_timer = self.reactor.register_timer(self.update_maintenance_item_timer)
         self.reactor.update_timer(self._maintenance_item_timer, self.reactor.NOW)
@@ -395,6 +403,7 @@ class VirtualSD:
         self.print_stats.power_loss = 0
         self.count_M204 = 0
         self.fan_state = {}
+        self.klipper_capture = False
     def stats(self, eventtime):
         if self.work_timer is None:
             return False, ""
@@ -436,6 +445,8 @@ class VirtualSD:
             'layer_count': self.layer_count,
             'run_dis': self.run_dis,
             'bed_mesh_calibate_state': self.bed_mesh_calibate_state,
+            'klipper_capture': self.klipper_capture,
+            'klipper_capture_cnt': self.klipper_capture_cnt,
             'cur_print_data': self.cur_print_data.get("jobs", [])[0] if self.cur_print_data.get("jobs", []) else {}
         })
         return res
@@ -471,6 +482,8 @@ class VirtualSD:
         self.count_M204 = 0
         self.layer = 0
         self.layer_count = 0
+        self.klipper_capture = False
+        self.record_klipper_capture_cnt_info(KLIPPER_CAPTURE_END)
         self.fan_state = {}
         self.resume_print_speed()
         if self.current_file is not None:
@@ -568,6 +581,20 @@ class VirtualSD:
             logging.warning('Error in getting flushing parameters')
             return
         self.gcode.respond_info("shwo gcode flush para: %s" % (flush_para))
+
+    cmd_CAPTURE_DELAY_IMAGE_help = "Capture images during printing to generate a time-lapse video."
+    def cmd_CAPTURE_DELAY_IMAGE(self, gcmd):
+        delay_photography_switch, location, frame, interval, power_loss_switch = self.get_delay_photography_info()
+        cmd_param = gcmd.get_raw_command_parameters()
+        if delay_photography_switch:
+            if all(gcode not in cmd_param for gcode in ["M400", "G1", "G2"]) and (frame := gcmd.get_int("P", default=None, minval=10, maxval=20)) and 10 <= frame <= 20:
+                self.klipper_capture = True
+                self.record_klipper_capture_cnt_info(KLIPPER_CAPTURE_COUNT)
+            else:
+                logging.info(f'cmd_param:{cmd_param}')
+                if cmd_param:
+                    self.gcode.run_script_from_command(cmd_param)
+                    self.gcode.run_script_from_command("M400")
 
     def load_gcode_metadata(self, file_path=""):
         self.gcode_metadata = self.get_print_file_metadata(file_path)
@@ -897,6 +924,28 @@ class VirtualSD:
                 os.remove(self.gcode_layer_path)
         return layer
 
+    def record_klipper_capture_cnt(self, capture_cnt):
+        """
+        record current delay image klipper_capture_cnt
+        """
+        with open(self.klipper_capture_cnt_path, "w") as f:
+            f.write(json.dumps({"klipper_capture_cnt": capture_cnt}))
+            f.flush()
+
+    def get_klipper_capture_cnt(self):
+        """
+        get last delay image klipper_capture_cnt
+        """
+        capture_cnt = 0
+        if os.path.exists(self.klipper_capture_cnt_path):
+            try:
+                with open(self.klipper_capture_cnt_path, "r") as f:
+                    capture_cnt = int(json.loads(f.read()).get("klipper_capture_cnt"))
+            except Exception as err:
+                logging.error(err)
+                os.remove(self.klipper_capture_cnt_path)
+        return capture_cnt
+
     def get_print_file_metadata(self, filename, filepath=""):
         from subprocess import check_output
         if not filepath:
@@ -1198,6 +1247,13 @@ class VirtualSD:
                         self.layer_key = layer_key
                     break
 
+    def record_klipper_capture_cnt_info(self, count_end_switch):
+        if count_end_switch:
+            self.klipper_capture_cnt += 1
+        else:
+            self.klipper_capture_cnt = 0
+        self.record_klipper_capture_cnt(self.klipper_capture_cnt)
+
     def first_floor_pause(self, line, toolhead):
         if self.print_first_layer and self.count_G1 >= 20:
             for layer_key in LAYER_KEYS:
@@ -1253,6 +1309,8 @@ class VirtualSD:
         self.count_line = 0
         self.count_G1 = 0 
         self.eepromWriteCount = 1
+        self.klipper_capture = False
+        self.klipper_capture_cnt = self.get_klipper_capture_cnt()
         gcode_move = self.printer.lookup_object('gcode_move', None)
         delay_photography_switch, location, frame, interval, power_loss_switch = self.get_delay_photography_info()
         bl24c16f = self.printer.lookup_object('bl24c16f') if "bl24c16f" in self.printer.objects and power_loss_switch else None
@@ -1386,7 +1444,8 @@ class VirtualSD:
                 if self.slow_print == True and self.layer > 0 and self.slow_count < self.layer:
                     self.resume_print_speed()
                 # 在读到END_PRINT的时候 判断是否需要拍照
-                self.check_end_print(line, power_loss_switch, delay_photography_switch, frame)
+                if self.klipper_capture is False:
+                    self.check_end_print(line, power_loss_switch, delay_photography_switch, frame)
                 if self.ignore_t_code(line): continue
                 if self.is_move_out_of_range_in_printing and pause_resume.pause_start == False:
                     self.is_move_out_of_range_in_printing = False
@@ -1433,6 +1492,8 @@ class VirtualSD:
         self.eepromWriteCount = 1
         self.work_timer = None
         self.cmd_from_sd = False
+        self.klipper_capture = False
+        self.record_klipper_capture_cnt_info(KLIPPER_CAPTURE_END)
         toolhead.extrude_below_min_temp_err_is_report = False
         if error_message is not None:
             self.print_stats.note_error(error_message)

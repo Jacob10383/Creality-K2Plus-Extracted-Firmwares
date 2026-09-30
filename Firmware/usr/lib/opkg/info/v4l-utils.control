@@ -9,7 +9,7 @@ Section: utils
 SourceDateEpoch: 1688356042
 Maintainer: Ted Hess <thess@kitschensync.net>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 431961
+Installed-Size: 431765
 Description:  libv4l is a collection of libraries which adds a thin abstraction layer on
  top of video4linux2 devices. The purpose of this (thin) layer is to make it
  easy for application writers to support a wide variety of devices without

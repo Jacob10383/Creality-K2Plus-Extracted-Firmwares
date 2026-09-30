@@ -9,5 +9,5 @@ Section: creality
 SourceDateEpoch: 1703128733
 Maintainer: Rosen Penev <rosenp@gmail.com>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 251898
+Installed-Size: 251897
 Description:  An MQTT client library in C.© Copyright 2009, 2023 IBM Corp., Ian Craggs and others

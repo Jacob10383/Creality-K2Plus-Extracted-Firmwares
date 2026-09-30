@@ -6,7 +6,7 @@ Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 
 Package: mcu_update
-Version: 3ee1921
+Version: 6665a6e
 Depends: libc, librt, libpthread, libcrlog
 Status: install user installed
 Architecture: arm_cortex-a7_neon
@@ -454,23 +454,23 @@ Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 
 Package: ncnn_yolov5
-Version: ddd12cd
-Depends: libc, librt, libpthread, libpthread, librt, libstdcpp6, zlib, libjpeg, libfreetype, opencv, libjson-c5, libcurl4, minizip
+Version: 771d174
+Depends: libc, librt, libpthread, libpthread, librt, libstdcpp6, zlib, libjpeg, libfreetype, opencv, libjson-c5, jsoncpp, libcurl4, minizip
 Status: install user installed
 Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 Auto-Installed: yes
 
 Package: base-files
-Version: 4-r0-eb57a2edd
+Version: 4-r0-4487dfa83
 Depends: libc, librt, libpthread, netifd, procd, jsonfilter, fstools, fwtool
 Status: install user installed
 Architecture: arm_cortex-a7_neon
 Conffiles:
- /etc/config/network a9e39c00fca734120dc357267e296d09ee0a6c82a1269aaa5b70348951cbb0e1
+ /etc/config/system 55410fef1c46ec027a610bb1000c2b5df8a696e391ffeb26f8a1a1178ab17a0e
  /etc/config/smartlinkd b437b128fbc5e9df30b674f7cecf1a94f631bba78049b6ab9ac6c968edf0054a
  /etc/config/fstab 48a7e780f9acb44e8193a3fe666382eac92c6936efa2860ce4993be70e62b498
- /etc/config/system 55410fef1c46ec027a610bb1000c2b5df8a696e391ffeb26f8a1a1178ab17a0e
+ /etc/config/network a9e39c00fca734120dc357267e296d09ee0a6c82a1269aaa5b70348951cbb0e1
  /etc/config/network a9e39c00fca734120dc357267e296d09ee0a6c82a1269aaa5b70348951cbb0e1
  /etc/config/system 55410fef1c46ec027a610bb1000c2b5df8a696e391ffeb26f8a1a1178ab17a0e
  /etc/ethers 56bda09b0aa3d1e88107bfa8a1c6e4449d5c1f47245dc1c4037ff9b5db163b7c
@@ -600,7 +600,7 @@ Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 
 Package: allwinner_uvc
-Version: f67ef37
+Version: de23ff1
 Depends: libc, librt, libpthread, libcrlog, libopenssl1.1, libshm, webrtc, libuapi, libdelivery, libcedarx, ncnn_yolov5
 Status: install user installed
 Architecture: arm_cortex-a7_neon
@@ -1068,14 +1068,14 @@ Conflicts: nginx-all-module
 Status: install user installed
 Architecture: arm_cortex-a7_neon
 Conffiles:
- /etc/nginx/win-utf 55adf050bad0cb60cbfe18649f8f17cd405fece0cc65eb78dac72c74c9dad944
- /etc/nginx/fastcgi_params f37852d0113de30fa6bfc3d9b180ef99383c06739530dd482a8538503afd5a58
  /etc/nginx/nginx.conf 0d7d3396d874f883f94a560cc0f045b01ae7225ebde5c95216f68c00cd5d1f54
- /etc/nginx/uwsgi_params 015cb581c2eb84b1a1ac9b575521d5881f791f632bfa62f34b26ba97d70c0d4f
- /etc/nginx/koi-win de518a9eafe86c8bc705e296d0ef26135835b46bdc0de01d1d50a630fa5d341e
- /etc/nginx/naxsi_core.rules f477cda76cd70ad2b9d6e07dd753946a703a94e83c9f0549b673b5a062651176
  /etc/nginx/mime.types 7f0b9e0c2320db6882b6d0db1cb3d28c41dd4ff0d1c6e17798ff19668f412598
  /etc/nginx/koi-utf b5f8a6d411db5e5d11d151d50cd1e962444732593adec0e1ef0a8c6eebec63ee
+ /etc/nginx/koi-win de518a9eafe86c8bc705e296d0ef26135835b46bdc0de01d1d50a630fa5d341e
+ /etc/nginx/win-utf 55adf050bad0cb60cbfe18649f8f17cd405fece0cc65eb78dac72c74c9dad944
+ /etc/nginx/fastcgi_params f37852d0113de30fa6bfc3d9b180ef99383c06739530dd482a8538503afd5a58
+ /etc/nginx/uwsgi_params 015cb581c2eb84b1a1ac9b575521d5881f791f632bfa62f34b26ba97d70c0d4f
+ /etc/nginx/naxsi_core.rules f477cda76cd70ad2b9d6e07dd753946a703a94e83c9f0549b673b5a062651176
 Installed-Time: 1782183154
 Auto-Installed: yes
 
@@ -1289,7 +1289,7 @@ Installed-Time: 1782183154
 
 Package: python3
 Version: 3.9.12-1
-Depends: libc, librt, libpthread, python3-light, python3-unittest, python3-ncurses, python3-ctypes, python3-pydoc, python3-decimal, python3-multiprocessing, python3-urllib, python3-readline, python3-gdbm, python3-xml, python3-sqlite3, python3-logging, python3-distutils, python3-codecs, python3-email, python3-openssl, python3-cgi, python3-cgitb, python3-dbm, python3-lzma, python3-asyncio
+Depends: libc, librt, libpthread, python3-light, python3-unittest, python3-ncurses, python3-ctypes, python3-pydoc, python3-logging, python3-decimal, python3-multiprocessing, python3-codecs, python3-readline, python3-xml, python3-sqlite3, python3-gdbm, python3-distutils, python3-email, python3-openssl, python3-urllib, python3-cgi, python3-cgitb, python3-dbm, python3-lzma, python3-asyncio
 Status: install user installed
 Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
@@ -1596,7 +1596,7 @@ Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 
 Package: cam_fw
-Version: 23cc53a
+Version: b6df846
 Depends: libc, librt, libpthread, libusb-1.0-0
 Status: install user installed
 Architecture: arm_cortex-a7_neon
@@ -1763,7 +1763,7 @@ Installed-Time: 1782183154
 Auto-Installed: yes
 
 Package: klipper
-Version: 743abda
+Version: c427947
 Depends: libc, librt, libpthread, python3, python3-setuptools, calc_psd
 Status: install user installed
 Architecture: arm_cortex-a7_neon
@@ -1842,7 +1842,7 @@ Architecture: arm_cortex-a7_neon
 Installed-Time: 1782183154
 
 Package: lvgl_klipper
-Version: 524af23
+Version: a542bdc
 Depends: libc, librt, libpthread, libfmtlog, aliyun-oss-cpp-sdk, libapr, libaprutil, libatomic1, libffmpeg-full, libblobmsg-json20210516, libopenssl1.1, libcurl4, libfreetype, libhv, libinotifytools, libjpeg, libjson-c5, jsoncpp, mxml, libpng, paho-mqtt-c, libprotobuf-c, libqrencode, libstdcpp6, libubox20210516, libubus20210630, libuuid1, wifimanager-v2.0-lib, libcxcloud
 Status: install user installed
 Architecture: arm_cortex-a7_neon

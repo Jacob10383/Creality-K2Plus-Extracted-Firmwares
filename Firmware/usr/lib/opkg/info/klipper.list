@@ -28,7 +28,6 @@
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/req/req_file.pyc
 /usr/share/klipper/config/printer-modix-big60-2020.cfg
 /usr/share/klippy-env/lib/python3.9/site-packages/pip-9.0.1.dist-info/entry_points.txt
-/usr/share/klipper/fw/cfs/cfs6_100_G31-cfs6_221_000.bin
 /usr/share/klipper/klippy/extras/shaper_defs.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/html5lib/filters/__init__.py
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/utils/glibc.pyc
@@ -170,7 +169,6 @@
 /usr/share/klipper/klippy/extras/filament_motion_sensor.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/requests/packages/chardet/mbcsgroupprober.pyc
 /usr/share/klipper/config/printer-anet-e10-2018.cfg
-/usr/share/klipper/fw/cfs/cfs0_050_G32-cfs0_000_152.bin
 /usr/share/klippy-env/lib/python3.9/base64.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/html5lib/treeadapters/genshi.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/setuptools/command/py36compat.pyc
@@ -389,6 +387,7 @@
 /usr/share/klipper/config/F038_CR4SNF038C01/printer.cfg
 /etc/init.d/klipper
 /usr/share/klipper/klippy/extras/temperature_sensors.cfg
+/usr/share/klipper/fw/cfs/cfs0_050_G32-cfs0_000_153.bin
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/html5lib/_trie/__init__.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/setuptools/command/install.pyc
 /usr/share/klipper/klippy/extras/query_endstops.py
@@ -451,6 +450,7 @@
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/requests/packages/urllib3/packages/ssl_match_hostname/_implementation.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pkg_resources/_vendor/appdirs.py
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/requests/packages/chardet/charsetgroupprober.pyc
+/usr/share/klipper/fw/cfs/cfs6_100_G31-cfs6_222_000.bin
 /usr/share/klipper/klippy/extras/base_info.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/requests/packages/urllib3/packages/six.pyc
 /usr/share/klipper/klippy/chelper/kin_shaper.c
@@ -616,7 +616,6 @@
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/baseparser.py
 /usr/share/klipper/docs/Rotation_Distance.md
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/html5lib/filters/lint.py
-/usr/share/klipper/fw/F012/rfid/rfd0_010_G21-rfd0_000_009.bin
 /usr/share/klipper/klippy/chelper/pyhelper.c
 /usr/share/klipper/fw/K1/noz0_120_G30-noz0_003_000.bin
 /usr/share/klipper/klippy/extras/delta_calibrate.py
@@ -664,6 +663,7 @@
 /usr/share/klipper/docs/img/corner-blob.jpg
 /usr/share/klipper/klippy/chelper/compiler.h
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/cachecontrol/heuristics.py
+/usr/share/klipper/fw/F012/rfid/rfd0_010_G21-rfd0_000_010.bin
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/cachecontrol/adapter.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/wheel/egg2wheel.py
 /usr/share/klipper/fw/F008/motor/mot0_021_C30-mot2_002_081.bin
@@ -1413,7 +1413,6 @@
 /usr/share/klipper/config/kit-zav3d-2019.cfg
 /usr/share/klipper/config/printer-creality-cr10-smart-pro-2022.cfg
 /usr/share/klipper/docs/TMC_Drivers.md
-/usr/share/klipper/fw/F008/rfid/rfd0_010_G21-rfd0_000_009.bin
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/requests/packages/urllib3/contrib/pyopenssl.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/utils/deprecation.pyc
 /usr/share/klippy-env/lib/python3.9/site-packages/setuptools/command/alias.py
@@ -1468,6 +1467,7 @@
 /usr/share/klippy-env/lib/python3.9/site-packages/pkg_resources/_vendor/packaging/requirements.py
 /usr/share/klippy-env/lib/python3.9/site-packages/setuptools/command/test.py
 /usr/share/klipper/klippy/extras/hall_filament_width_sensor.pyc
+/usr/share/klipper/fw/F008/rfid/rfd0_010_G21-rfd0_000_010.bin
 /usr/share/klippy-env/lib/python3.9/site-packages/pip/_vendor/html5lib/_tokenizer.pyc
 /usr/share/klipper/docs/img/klipper-logo-small.png
 /usr/share/klipper/klippy/extras/tmc2130.pyc

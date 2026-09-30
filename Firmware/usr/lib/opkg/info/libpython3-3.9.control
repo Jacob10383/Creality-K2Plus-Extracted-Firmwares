@@ -12,5 +12,5 @@ ABIVersion: -3.9
 CPE-ID: cpe:/a:python:python
 Maintainer: Jeffery To <jeffery.to@gmail.com>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 1027860
+Installed-Size: 1027861
 Description:  This package contains only core Python library.

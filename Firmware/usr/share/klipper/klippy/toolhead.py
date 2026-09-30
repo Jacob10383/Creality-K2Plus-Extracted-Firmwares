@@ -710,7 +710,9 @@ class ToolHead:
         self.dwell(delay)
     def cmd_M400(self, gcmd):
         # Wait for current moves to finish
+        delay = gcmd.get_float('P', 0., minval=0.) / 1000.
         self.wait_moves()
+        self.dwell(delay)
     cmd_SET_VELOCITY_LIMIT_help = "Set printer velocity limits"
     def cmd_SET_VELOCITY_LIMIT(self, gcmd):
 

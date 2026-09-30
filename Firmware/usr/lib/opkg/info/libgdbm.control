@@ -9,7 +9,7 @@ Section: libs
 SourceDateEpoch: 1688356042
 Maintainer: Marcel Denia <naoir@gmx.net>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 19518
+Installed-Size: 19519
 Description:  GNU database manager library
  GNU dbm is a set of database routines that use extendible hashing and
  works similar to the standard UNIX dbm routines.

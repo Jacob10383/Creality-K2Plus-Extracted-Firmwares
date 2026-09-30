@@ -10,5 +10,5 @@ Section: libs
 SourceDateEpoch: 1733994814
 Maintainer: Karl Palsson <karlp@etactica.com>
 Architecture: arm_cortex-a7_neon
-Installed-Size: 143288
+Installed-Size: 143289
 Description:  libwebsockets (OpenSSL)
